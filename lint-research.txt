@@ -1,0 +1,15 @@
+
+> my-app@0.0.0 lint
+> eslint . --ext ts,tsx --report-unused-disable-directives
+
+
+C:\Users\yilma\Downloads\kimiOKC\extracted\app\src\sections\ResearchPanel.tsx
+   4:25  error  'Code' is defined but never used                 @typescript-eslint/no-unused-vars
+   4:31  error  'TestTube' is defined but never used             @typescript-eslint/no-unused-vars
+   4:50  error  'FileText' is defined but never used             @typescript-eslint/no-unused-vars
+   4:60  error  'Globe' is defined but never used                @typescript-eslint/no-unused-vars
+   7:18  error  'activeTask' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  39:48  error  Unexpected any. Specify a different type         @typescript-eslint/no-explicit-any
+
+✖ 6 problems (6 errors, 0 warnings)
+

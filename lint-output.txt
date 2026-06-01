@@ -1,0 +1,55 @@
+
+C:\Users\yilma\Downloads\kimiOKC\extracted\app\src\App.tsx
+  34:6  warning  React Hook useEffect has missing dependencies: 'addToast', 'applyTheme', 'loadApiKeys', 'loadBackups', 'loadSessions', and 'loadSettings'. Either include them or remove the dependency array  react-hooks/exhaustive-deps
+
+C:\Users\yilma\Downloads\kimiOKC\extracted\app\src\components\CommandPalette.tsx
+   6:18  error  'AnimatePresence' is defined but never used       @typescript-eslint/no-unused-vars
+  10:13  error  'FileText' is defined but never used              @typescript-eslint/no-unused-vars
+  10:54  error  'X' is defined but never used                     @typescript-eslint/no-unused-vars
+  25:21  error  'activePanel' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\yilma\Downloads\kimiOKC\extracted\app\src\components\Onboarding.tsx
+  3:18  error  'AnimatePresence' is defined but never used  @typescript-eslint/no-unused-vars
+  5:32  error  'Wifi' is defined but never used             @typescript-eslint/no-unused-vars
+
+C:\Users\yilma\Downloads\kimiOKC\extracted\app\src\components\Sidebar.tsx
+  28:38  warning  React Hook useEffect has a missing dependency: 'applyTheme'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+C:\Users\yilma\Downloads\kimiOKC\extracted\app\src\components\ui\badge.tsx
+  46:17  warning  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+
+C:\Users\yilma\Downloads\kimiOKC\extracted\app\src\components\ui\button-group.tsx
+  82:3  warning  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+
+C:\Users\yilma\Downloads\kimiOKC\extracted\app\src\components\ui\button.tsx
+  62:18  warning  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+
+C:\Users\yilma\Downloads\kimiOKC\extracted\app\src\components\ui\form.tsx
+  159:3  warning  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+
+C:\Users\yilma\Downloads\kimiOKC\extracted\app\src\components\ui\navigation-menu.tsx
+  167:3  warning  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+
+C:\Users\yilma\Downloads\kimiOKC\extracted\app\src\components\ui\sidebar.tsx
+  725:3  warning  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+
+C:\Users\yilma\Downloads\kimiOKC\extracted\app\src\components\ui\toggle.tsx
+  45:18  warning  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+
+C:\Users\yilma\Downloads\kimiOKC\extracted\app\src\sections\ComparePanel.tsx
+  1:28  error  'useEffect' is defined but never used  @typescript-eslint/no-unused-vars
+  8:31  error  'X' is defined but never used          @typescript-eslint/no-unused-vars
+
+C:\Users\yilma\Downloads\kimiOKC\extracted\app\src\sections\ImprovePanel.tsx
+   57:89  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   87:19  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  148:17  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\yilma\Downloads\kimiOKC\extracted\app\src\sections\StatusPanel.tsx
+  139:31  error  '_err' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\yilma\Downloads\kimiOKC\extracted\app\src\store\uiStore.ts
+  22:49  error  'get' is defined but never used  @typescript-eslint/no-unused-vars
+
+✖ 22 problems (13 errors, 9 warnings)
+
