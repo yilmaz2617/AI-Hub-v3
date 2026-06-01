@@ -1,4 +1,4 @@
- name: AI Onay Sistemi
+name: AI Onay Sistemi
 
 on:
   push:
