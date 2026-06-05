@@ -1,0 +1,81 @@
+﻿import React, { useState, useCallback } from 'react';
+import { useAppStore } from '../../../store/appStore';
+import { Search, Sparkles, Code, FileText, Zap, GitMerge } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+
+export function ResearchImproveHub() {
+  const [activeTab, setActiveTab] = useState<'research' | 'improve'>('research');
+  const { theme } = useAppStore();
+  const isDark = theme === 'dark';
+
+  return (
+    <div className={`flex-1 overflow-auto p-6 ${isDark ? 'bg-gray-900 text-white' : 'bg-white text-gray-900'}`}>
+      <div className="max-w-6xl mx-auto">
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold flex items-center gap-3">
+            <GitMerge className="w-8 h-8 text-blue-500" />
+            Research & Improve Hub
+          </h1>
+          <p className={`mt-2 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+            Kod analizi, arastirma ve otomatik iyilestirme merkezi
+          </p>
+        </div>
+
+        <div className="flex gap-2 mb-6">
+          <TabButton active={activeTab === 'research'} onClick={() => setActiveTab('research')} icon={<Search className="w-4 h-4" />} label="Deep Research" />
+          <TabButton active={activeTab === 'improve'} onClick={() => setActiveTab('improve')} icon={<Sparkles className="w-4 h-4" />} label="AI Improve" />
+        </div>
+
+        <AnimatePresence mode="wait">
+          {activeTab === 'research' ? <ResearchPanel key="research" isDark={isDark} /> : <ImprovePanel key="improve" isDark={isDark} />}
+        </AnimatePresence>
+      </div>
+    </div>
+  );
+}
+
+function TabButton({ active, onClick, icon, label }: any) {
+  return (
+    <button onClick={onClick} className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all ${active ? 'bg-blue-500 text-white shadow-lg' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}>
+      {icon}{label}
+    </button>
+  );
+}
+
+function ResearchPanel({ isDark }: any) {
+  const [query, setQuery] = useState('');
+  const [loading, setLoading] = useState(false);
+  const handleResearch = useCallback(async () => { if (!query.trim()) return; setLoading(true); await new Promise(r => setTimeout(r, 2000)); setLoading(false); }, [query]);
+  
+  return (
+    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="space-y-6">
+      <div className={`p-6 rounded-xl ${isDark ? 'bg-gray-800' : 'bg-gray-50'}`}>
+        <h2 className="text-xl font-semibold mb-4 flex items-center gap-2"><FileText className="w-5 h-5 text-purple-500" />Derin Arastirma</h2>
+        <div className="flex gap-3">
+          <input type="text" value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Arastirma konusu girin..." className={`flex-1 px-4 py-3 rounded-lg border ${isDark ? 'bg-gray-700 border-gray-600 text-white' : 'bg-white border-gray-300'}`} onKeyDown={(e) => e.key === 'Enter' && handleResearch()} />
+          <button onClick={handleResearch} disabled={loading} className="px-6 py-3 bg-purple-500 text-white rounded-lg hover:bg-purple-600 disabled:opacity-50 flex items-center gap-2">
+            {loading ? <Zap className="w-4 h-4 animate-spin" /> : <Search className="w-4 h-4" />}Arastir
+          </button>
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
+function ImprovePanel({ isDark }: any) {
+  const [code, setCode] = useState('');
+  const [loading, setLoading] = useState(false);
+  const handleImprove = useCallback(async () => { if (!code.trim()) return; setLoading(true); await new Promise(r => setTimeout(r, 1500)); setLoading(false); }, [code]);
+  
+  return (
+    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="space-y-6">
+      <div className={`p-6 rounded-xl ${isDark ? 'bg-gray-800' : 'bg-gray-50'}`}>
+        <h2 className="text-xl font-semibold mb-4 flex items-center gap-2"><Code className="w-5 h-5 text-green-500" />Kod Analizi & Iyilestirme</h2>
+        <textarea value={code} onChange={(e) => setCode(e.target.value)} placeholder="// Kodunuzu buraya yapistirin..." rows={10} className={`w-full px-4 py-3 rounded-lg border font-mono text-sm ${isDark ? 'bg-gray-700 border-gray-600 text-white' : 'bg-white border-gray-300'}`} />
+        <button onClick={handleImprove} disabled={loading} className="mt-4 px-6 py-3 bg-green-500 text-white rounded-lg hover:bg-green-600 disabled:opacity-50 flex items-center gap-2">
+          {loading ? <Zap className="w-4 h-4 animate-spin" /> : <Sparkles className="w-4 h-4" />}Analiz Et & Iyilestir
+        </button>
+      </div>
+    </motion.div>
+  );
+}
