@@ -143,9 +143,7 @@ export async function callPremiumAPI(
   if (hasKey && key) {
     headers['Authorization'] = 'Bearer ' + key;
   } else {
-    // Boş key gönderme — OpenRouter free tier boş key ile de çalışabilir
-    // ama daha agresif rate limit uygular
-    headers['Authorization'] = 'Bearer sk-or-v1-demo';
+    throw new Error('OpenRouter API key bulunamadı. Ayarlar panelinden ekleyin.');
   }
   const messages = history.map(m => ({ role: m.role === 'assistant' ? 'assistant' : 'user', content: m.content }));
   const res = await fetch(url, {

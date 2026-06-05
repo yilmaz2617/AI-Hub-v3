@@ -165,5 +165,3 @@ export interface TestResult {
   tests: boolean;
   errors: string[];
 }
-
-export type ResearchPanelId = PanelId | 'research';
