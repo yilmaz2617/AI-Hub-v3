@@ -6,7 +6,7 @@ export type Provider = 'groq' | 'openrouter' | 'gemini' | 'anthropic' | 'pollina
 
 export type ThemeId = 'dark' | 'light' | 'ocean' | 'sunset' | 'matrix' | 'purple' | 'nord';
 
-export type PanelId = 'chat' | 'premium' | 'image' | 'status' | 'improve';
+export type PanelId = 'chat' | 'premium' | 'image' | 'status' | 'improve' | 'compare';
 
 export type IntentId = 'genel' | 'ui' | 'ozellik' | 'performans' | 'guvenlik';
 

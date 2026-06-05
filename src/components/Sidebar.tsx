@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
   MessageSquare, Crown, Image, Wifi, Zap,
   ChevronLeft, ChevronRight, Plus, Trash2,
-  Keyboard, Brain
+  Keyboard, Brain, ArrowRightLeft
 } from 'lucide-react';
 import { useEffect } from 'react';
 import type { PanelId } from '@/types';
@@ -18,6 +18,7 @@ const PANELS: { id: PanelId; label: string; icon: typeof MessageSquare; shortcut
   { id: 'status', label: 'API Durumu', icon: Wifi, shortcut: '4' },
   { id: 'improve', label: 'Geliştir', icon: Zap, shortcut: '5' },
   { id: 'research', label: 'Deep Research', icon: Brain, shortcut: '6' },
+  { id: 'compare', label: 'Karşılaştır', icon: ArrowRightLeft, shortcut: '7' },
 ];
 
 export default function Sidebar() {

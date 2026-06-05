@@ -19,7 +19,7 @@ import ResearchPanel from '@/sections/ResearchPanel';
 
 function App() {
   const { activePanel, setPanel, loadApiKeys, loadBackups, addToast } = useAppStore();
-  const { showCompareMode, isZenMode } = useUIStore();
+  const { isZenMode } = useUIStore();
   const applyTheme = useThemeStore(s => s.applyTheme);
   const loadSessions = useChatStore(s => s.loadSessions);
   const loadSettings = useSettingsStore(s => s.loadSettings);
@@ -42,11 +42,11 @@ function App() {
   useHotkeys('ctrl+4', () => setPanel('status'), { preventDefault: true });
   useHotkeys('ctrl+5', () => setPanel('improve'), { preventDefault: true });
   useHotkeys('ctrl+6', () => setPanel('research'), { preventDefault: true });
+  useHotkeys('ctrl+7', () => setPanel('compare'), { preventDefault: true });
   useHotkeys('ctrl+b', () => useAppStore.getState().toggleSidebar(), { preventDefault: true });
   useHotkeys('ctrl+t', () => useThemeStore.getState().toggleTheme(), { preventDefault: true });
 
   const renderPanel = () => {
-    if (showCompareMode) return <ComparePanel />;
     switch (activePanel) {
       case 'chat': return <ChatPanel />;
       case 'premium': return <PremiumPanel />;
@@ -54,6 +54,7 @@ function App() {
       case 'status': return <StatusPanel />;
       case 'improve': return <ImprovePanel />;
       case 'research': return <ResearchPanel />;
+      case 'compare': return <ComparePanel />;
       default: return <ChatPanel />;
     }
   };

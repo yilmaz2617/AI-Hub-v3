@@ -41,6 +41,7 @@ export async function callAPI(
   history: Message[],
   system?: string,
   signal?: AbortSignal,
+  onStream?: (chunk: string) => void,
 ): Promise<string> {
   const systemMsg = system || 'Sen yardımcı bir AI asistansın.';
   const messages = history.map(m => ({ role: m.role === 'assistant' ? 'assistant' : 'user', content: m.content }));
@@ -57,6 +58,7 @@ export async function callAPI(
       headers['HTTP-Referer'] = 'https://aihub.local';
       headers['X-Title'] = 'AI Hub';
     }
+    const useStream = !!onStream;
     const res = await fetch(url, {
       method: 'POST',
       headers,
@@ -65,12 +67,35 @@ export async function callAPI(
         messages: [{ role: 'system', content: systemMsg }, ...messages],
         max_tokens: 4096,
         temperature: 0.7,
+        stream: useStream,
       }),
       signal,
     });
     if (!res.ok) {
       const e = await res.json().catch(() => ({}));
       throw new Error(e.error?.message || res.statusText);
+    }
+    if (useStream && res.body) {
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder();
+      let full = '';
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        const chunk = decoder.decode(value, { stream: true });
+        for (const line of chunk.split('\n')) {
+          const trimmed = line.trim();
+          if (!trimmed || trimmed === 'data: [DONE]') continue;
+          if (trimmed.startsWith('data: ')) {
+            try {
+              const json = JSON.parse(trimmed.slice(6));
+              const delta = json.choices?.[0]?.delta?.content || '';
+              if (delta) { full += delta; onStream(delta); }
+            } catch { /* ignore parse errors */ }
+          }
+        }
+      }
+      return full;
     }
     return (await res.json()).choices[0].message.content;
   }

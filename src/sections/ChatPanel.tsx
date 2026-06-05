@@ -112,6 +112,8 @@ export default function ChatPanel() {
       let reply: string;
       if (provider === 'pollinations') {
         reply = await callPollinations(text, systemPrompt);
+        updateMessage(sid, aiMsgId, reply);
+        streamText(reply, aiMsgId);
       } else {
         const key = apiKeys[provider];
         if (!key) {
@@ -123,12 +125,26 @@ export default function ChatPanel() {
           content: m.content,
           timestamp: m.timestamp,
         })) || [];
-        reply = await callAPI(provider, model, key, history, systemPrompt, abortRef.current.signal);
-      }
 
-      // Start streaming effect
-      updateMessage(sid, aiMsgId, reply);
-      streamText(reply, aiMsgId);
+        const supportsStream = provider === 'groq' || provider === 'openrouter';
+        if (supportsStream) {
+          // Gerçek SSE streaming
+          setStreamingMsgId(aiMsgId);
+          let accumulated = '';
+          reply = await callAPI(provider, model, key, history, systemPrompt, abortRef.current.signal, (chunk) => {
+            accumulated += chunk;
+            setStreamingText(accumulated + '▋');
+          });
+          setStreamingMsgId(null);
+          setStreamingText('');
+          updateMessage(sid, aiMsgId, reply);
+        } else {
+          // Diğer sağlayıcılar: simüle streaming
+          reply = await callAPI(provider, model, key, history, systemPrompt, abortRef.current.signal);
+          updateMessage(sid, aiMsgId, reply);
+          streamText(reply, aiMsgId);
+        }
+      }
     } catch (e: unknown) {
       if ((e as Error).name === 'AbortError') {
         updateMessage(sid, aiMsgId, '⛔ İptal edildi.');
