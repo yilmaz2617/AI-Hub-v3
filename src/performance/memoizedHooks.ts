@@ -7,8 +7,9 @@ export function useMemoizedCallback<T extends (...args: unknown[]) => unknown>(c
 }
 
 export function useDeepMemo<T>(value: T): T {
-  const deps = useMemo(() => JSON.stringify(value), [value]);
-  return useMemo(() => value, [deps]);
+  const deps = JSON.stringify(value);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  return useMemo(() => value, [deps, value]);
 }
 
 
