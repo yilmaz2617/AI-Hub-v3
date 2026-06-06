@@ -1,14 +1,13 @@
-
-# Kimi Bridge Agent - PowerShell Script
-# Bu script, Kimi WebBridge'in yerel dosyalara yazmasını sağlar
-# Çalıştır: .	kimi-bridge.ps1
+# Kimi Bridge Agent v2 - PowerShell Script
+# Otomatik dosya yazma, komut çalıştırma, git push
+# Çalıştır: .   kimi-bridge.ps1
 
 param(
     [int]$Port = 3456,
     [string]$ProjectDir = "D:\AI-Hub-v3"
 )
 
-Write-Host "🚀 Kimi Bridge Agent başlatılıyor..." -ForegroundColor Cyan
+Write-Host "🚀 Kimi Bridge Agent v2 başlatılıyor..." -ForegroundColor Cyan
 Write-Host "📁 Proje Dizini: $ProjectDir" -ForegroundColor Cyan
 Write-Host "🌐 Port: $Port" -ForegroundColor Cyan
 Write-Host ""
@@ -20,6 +19,16 @@ $listener.Start()
 
 Write-Host "✅ Kimi Bridge Agent çalışıyor: http://localhost:$Port" -ForegroundColor Green
 Write-Host "📌 Durdurmak için Ctrl+C basın" -ForegroundColor Yellow
+Write-Host ""
+Write-Host "Endpoints:" -ForegroundColor Yellow
+Write-Host "  POST /write       - Dosya yaz" -ForegroundColor Gray
+Write-Host "  POST /batch-write - Çoklu dosya yaz" -ForegroundColor Gray
+Write-Host "  GET  /read        - Dosya oku" -ForegroundColor Gray
+Write-Host "  POST /run-command - Komut çalıştır" -ForegroundColor Gray
+Write-Host "  POST /git-push    - GitHub'a push et" -ForegroundColor Gray
+Write-Host "  GET  /lint        - Lint çalıştır" -ForegroundColor Gray
+Write-Host "  GET  /test        - Test çalıştır" -ForegroundColor Gray
+Write-Host "  GET  /status      - Durum bilgisi" -ForegroundColor Gray
 Write-Host ""
 
 while ($listener.IsListening) {
@@ -42,12 +51,15 @@ while ($listener.IsListening) {
     Write-Host "📨 $($request.HttpMethod) $url" -ForegroundColor Gray
 
     try {
-        if ($request.HttpMethod -eq "POST" -and $url -eq "/write") {
-            # Request body oku
+        # Request body oku (POST için)
+        $body = ""
+        if ($request.HttpMethod -eq "POST") {
             $reader = New-Object System.IO.StreamReader($request.InputStream, $request.ContentEncoding)
             $body = $reader.ReadToEnd()
             $reader.Close()
+        }
 
+        if ($request.HttpMethod -eq "POST" -and $url -eq "/write") {
             $data = $body | ConvertFrom-Json
             $filePath = $data.filePath
             $content = $data.content
@@ -74,6 +86,29 @@ while ($listener.IsListening) {
             $result = @{ success = $true; path = $fullPath; bytes = $content.Length }
             Write-Host "✅ Yazıldı: $filePath" -ForegroundColor Green
         }
+        elseif ($request.HttpMethod -eq "POST" -and $url -eq "/batch-write") {
+            # Çoklu dosya yazma
+            $data = $body | ConvertFrom-Json
+            $files = $data.files
+            $written = @()
+
+            foreach ($file in $files) {
+                $filePath = $file.path
+                $content = $file.content
+                $fullPath = Join-Path $ProjectDir $filePath
+
+                $dir = Split-Path $fullPath -Parent
+                if (-not (Test-Path $dir)) {
+                    New-Item -ItemType Directory -Path $dir -Force | Out-Null
+                }
+
+                $content | Out-File $fullPath -Encoding UTF8 -Force
+                $written += $filePath
+                Write-Host "✅ Yazıldı: $filePath" -ForegroundColor Green
+            }
+
+            $result = @{ success = $true; files = $written; count = $written.Count }
+        }
         elseif ($request.HttpMethod -eq "GET" -and $url.StartsWith("/read")) {
             $query = [System.Web.HttpUtility]::ParseQueryString($request.Url.Query)
             $filePath = $query["path"]
@@ -87,21 +122,96 @@ while ($listener.IsListening) {
             $result = @{ content = $content }
             Write-Host "📖 Okundu: $filePath" -ForegroundColor Blue
         }
+        elseif ($request.HttpMethod -eq "POST" -and $url -eq "/run-command") {
+            # Komut çalıştır
+            $data = $body | ConvertFrom-Json
+            $command = $data.command
+            $cwd = if ($data.cwd) { $data.cwd } else { $ProjectDir }
+
+            Write-Host "⚡ Komut: $command" -ForegroundColor Magenta
+
+            $psi = New-Object System.Diagnostics.ProcessStartInfo
+            $psi.FileName = "powershell.exe"
+            $psi.Arguments = "-NoProfile -ExecutionPolicy Bypass -Command `"$command`""
+            $psi.WorkingDirectory = $cwd
+            $psi.RedirectStandardOutput = $true
+            $psi.RedirectStandardError = $true
+            $psi.UseShellExecute = $false
+
+            $process = [System.Diagnostics.Process]::Start($psi)
+            $stdout = $process.StandardOutput.ReadToEnd()
+            $stderr = $process.StandardError.ReadToEnd()
+            $process.WaitForExit()
+
+            $result = @{
+                success = ($process.ExitCode -eq 0)
+                exitCode = $process.ExitCode
+                stdout = $stdout
+                stderr = $stderr
+            }
+
+            if ($process.ExitCode -eq 0) {
+                Write-Host "✅ Komut başarılı" -ForegroundColor Green
+            } else {
+                Write-Host "❌ Komut hatası: $($process.ExitCode)" -ForegroundColor Red
+            }
+        }
+        elseif ($request.HttpMethod -eq "POST" -and $url -eq "/git-push") {
+            # Git push otomatik
+            $data = $body | ConvertFrom-Json
+            $message = if ($data.message) { $data.message } else { "Auto update from Kimi Bridge" }
+
+            Write-Host "🔄 Git push başlatılıyor..." -ForegroundColor Cyan
+
+            # Git komutları
+            $commands = @"
+cd "$ProjectDir"
+git add .
+git commit -m "$message" 2>&1
+git push origin main 2>&1
+"@
+
+            $psi = New-Object System.Diagnostics.ProcessStartInfo
+            $psi.FileName = "powershell.exe"
+            $psi.Arguments = "-NoProfile -ExecutionPolicy Bypass -Command `"$commands`""
+            $psi.WorkingDirectory = $ProjectDir
+            $psi.RedirectStandardOutput = $true
+            $psi.RedirectStandardError = $true
+            $psi.UseShellExecute = $false
+
+            $process = [System.Diagnostics.Process]::Start($psi)
+            $stdout = $process.StandardOutput.ReadToEnd()
+            $stderr = $process.StandardError.ReadToEnd()
+            $process.WaitForExit()
+
+            $result = @{
+                success = ($process.ExitCode -eq 0)
+                exitCode = $process.ExitCode
+                output = $stdout
+                error = $stderr
+                message = $message
+            }
+
+            if ($process.ExitCode -eq 0) {
+                Write-Host "✅ Git push başarılı!" -ForegroundColor Green
+            } else {
+                Write-Host "❌ Git push hatası" -ForegroundColor Red
+            }
+        }
         elseif ($request.HttpMethod -eq "GET" -and $url -eq "/lint") {
-            # Lint çalıştır
             $lintOutput = & npm run lint 2>&1 | Out-String
             $result = @{ lint = $lintOutput }
             Write-Host "🔍 Lint çalıştırıldı" -ForegroundColor Magenta
         }
         elseif ($request.HttpMethod -eq "GET" -and $url -eq "/test") {
-            # Test çalıştır
             $testOutput = & npm run test 2>&1 | Out-String
             $result = @{ test = $testOutput }
             Write-Host "🧪 Test çalıştırıldı" -ForegroundColor Magenta
         }
         elseif ($request.HttpMethod -eq "GET" -and $url -eq "/status") {
-            $result = @{ 
+            $result = @{
                 status = "running"
+                version = "2.0"
                 project = $ProjectDir
                 port = $Port
                 time = (Get-Date).ToString("yyyy-MM-dd HH:mm:ss")
