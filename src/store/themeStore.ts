@@ -16,7 +16,9 @@ const getStoredTheme = (): ThemeId => {
   try {
     const stored = localStorage.getItem(STORAGE_KEYS.THEME) as ThemeId;
     if (stored && THEMES.find(t => t.id === stored)) return stored;
-  } catch { /* ignore */ }
+  } catch {
+    /* ignore */
+  }
   return 'dark';
 };
 
@@ -25,7 +27,11 @@ export const useThemeStore = create<ThemeState>((set, get) => ({
 
   setTheme: (id: ThemeId) => {
     set({ themeId: id });
-    try { localStorage.setItem(STORAGE_KEYS.THEME, id); } catch { /* ignore */ }
+    try {
+      localStorage.setItem(STORAGE_KEYS.THEME, id);
+    } catch {
+      /* ignore */
+    }
     setTimeout(() => get().applyTheme(), 0);
   },
 

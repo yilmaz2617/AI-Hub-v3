@@ -4,8 +4,18 @@ import { useChatStore } from '@/store/chatStore';
 import { useThemeStore } from '@/store/themeStore';
 import { downloadFile } from '@/lib/utils';
 import {
-  Volume2, VolumeX, Type, Gauge, Zap, Palette,
-  Download, Upload, Trash2, X, Keyboard, Code
+  Volume2,
+  VolumeX,
+  Type,
+  Gauge,
+  Zap,
+  Palette,
+  Download,
+  Upload,
+  Trash2,
+  X,
+  Keyboard,
+  Code,
 } from 'lucide-react';
 
 interface SettingsPanelProps {
@@ -29,11 +39,11 @@ export default function SettingsPanel({ onClose }: SettingsPanelProps) {
     const input = document.createElement('input');
     input.type = 'file';
     input.accept = '.json';
-    input.onchange = (e) => {
+    input.onchange = e => {
       const file = (e.target as HTMLInputElement).files?.[0];
       if (!file) return;
       const reader = new FileReader();
-      reader.onload = (ev) => {
+      reader.onload = ev => {
         try {
           const data = JSON.parse(ev.target?.result as string);
           if (Array.isArray(data)) {
@@ -52,7 +62,7 @@ export default function SettingsPanel({ onClose }: SettingsPanelProps) {
   };
 
   const handleClearAll = () => {
-    if (!confirm('Tüm veriler (sohbetler, ayarlar, API key\'leri) silinecek. Emin misin?')) return;
+    if (!confirm("Tüm veriler (sohbetler, ayarlar, API key'leri) silinecek. Emin misin?")) return;
     Object.keys(localStorage).forEach(key => {
       if (key.startsWith('aihub_')) localStorage.removeItem(key);
     });
@@ -67,22 +77,40 @@ export default function SettingsPanel({ onClose }: SettingsPanelProps) {
         style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}
       >
         {/* Header */}
-        <div className="flex items-center justify-between px-5 py-4" style={{ borderBottom: '1px solid var(--border)' }}>
+        <div
+          className="flex items-center justify-between px-5 py-4"
+          style={{ borderBottom: '1px solid var(--border)' }}
+        >
           <div className="flex items-center gap-2">
             <Code size={18} style={{ color: 'var(--accent)' }} />
-            <span className="font-semibold text-sm" style={{ color: 'var(--text)' }}>Ayarlar</span>
+            <span className="font-semibold text-sm" style={{ color: 'var(--text)' }}>
+              Ayarlar
+            </span>
           </div>
-          <button onClick={onClose} className="p-1 rounded-lg hover:bg-[var(--surface2)] transition-colors" style={{ color: 'var(--text3)' }}>
+          <button
+            onClick={onClose}
+            className="p-1 rounded-lg hover:bg-[var(--surface2)] transition-colors"
+            style={{ color: 'var(--text3)' }}
+          >
             <X size={18} />
           </button>
         </div>
 
         <div className="flex-1 overflow-y-auto p-5 space-y-5" style={{ scrollbarWidth: 'thin' }}>
           {/* Sound */}
-          <div className="rounded-xl p-4 space-y-3" style={{ background: 'var(--surface2)', border: '1px solid var(--border)' }}>
+          <div
+            className="rounded-xl p-4 space-y-3"
+            style={{ background: 'var(--surface2)', border: '1px solid var(--border)' }}
+          >
             <div className="flex items-center gap-2">
-              {settings.soundEnabled ? <Volume2 size={16} style={{ color: 'var(--green)' }} /> : <VolumeX size={16} style={{ color: 'var(--text3)' }} />}
-              <span className="text-sm font-medium" style={{ color: 'var(--text)' }}>Ses Bildirimleri</span>
+              {settings.soundEnabled ? (
+                <Volume2 size={16} style={{ color: 'var(--green)' }} />
+              ) : (
+                <VolumeX size={16} style={{ color: 'var(--text3)' }} />
+              )}
+              <span className="text-sm font-medium" style={{ color: 'var(--text)' }}>
+                Ses Bildirimleri
+              </span>
               <button
                 onClick={settings.toggleSound}
                 className="ml-auto w-10 h-5 rounded-full relative transition-colors"
@@ -97,30 +125,52 @@ export default function SettingsPanel({ onClose }: SettingsPanelProps) {
                 />
               </button>
             </div>
-            <p className="text-[11px]" style={{ color: 'var(--text3)' }}>AI yanıtı geldiğinde sesli bildirim çal</p>
+            <p className="text-[11px]" style={{ color: 'var(--text3)' }}>
+              AI yanıtı geldiğinde sesli bildirim çal
+            </p>
           </div>
 
           {/* Animations */}
-          <div className="rounded-xl p-4 space-y-3" style={{ background: 'var(--surface2)', border: '1px solid var(--border)' }}>
+          <div
+            className="rounded-xl p-4 space-y-3"
+            style={{ background: 'var(--surface2)', border: '1px solid var(--border)' }}
+          >
             <div className="flex items-center gap-2">
-              <Zap size={16} style={{ color: settings.animationsEnabled ? 'var(--yellow)' : 'var(--text3)' }} />
-              <span className="text-sm font-medium" style={{ color: 'var(--text)' }}>Animasyonlar</span>
+              <Zap
+                size={16}
+                style={{ color: settings.animationsEnabled ? 'var(--yellow)' : 'var(--text3)' }}
+              />
+              <span className="text-sm font-medium" style={{ color: 'var(--text)' }}>
+                Animasyonlar
+              </span>
               <button
                 onClick={settings.toggleAnimations}
                 className="ml-auto w-10 h-5 rounded-full relative transition-colors"
-                style={{ background: settings.animationsEnabled ? 'var(--yellow)' : 'var(--border2)' }}
+                style={{
+                  background: settings.animationsEnabled ? 'var(--yellow)' : 'var(--border2)',
+                }}
               >
-                <div className="absolute top-0.5 w-4 h-4 rounded-full transition-all bg-white" style={{ left: settings.animationsEnabled ? '22px' : '2px' }} />
+                <div
+                  className="absolute top-0.5 w-4 h-4 rounded-full transition-all bg-white"
+                  style={{ left: settings.animationsEnabled ? '22px' : '2px' }}
+                />
               </button>
             </div>
           </div>
 
           {/* Font Size */}
-          <div className="rounded-xl p-4 space-y-3" style={{ background: 'var(--surface2)', border: '1px solid var(--border)' }}>
+          <div
+            className="rounded-xl p-4 space-y-3"
+            style={{ background: 'var(--surface2)', border: '1px solid var(--border)' }}
+          >
             <div className="flex items-center gap-2">
               <Type size={16} style={{ color: 'var(--accent)' }} />
-              <span className="text-sm font-medium" style={{ color: 'var(--text)' }}>Font Boyutu</span>
-              <span className="ml-auto text-xs" style={{ color: 'var(--text3)' }}>{settings.fontSize}px</span>
+              <span className="text-sm font-medium" style={{ color: 'var(--text)' }}>
+                Font Boyutu
+              </span>
+              <span className="ml-auto text-xs" style={{ color: 'var(--text3)' }}>
+                {settings.fontSize}px
+              </span>
             </div>
             <input
               type="range"
@@ -133,12 +183,21 @@ export default function SettingsPanel({ onClose }: SettingsPanelProps) {
           </div>
 
           {/* Stream Speed */}
-          <div className="rounded-xl p-4 space-y-3" style={{ background: 'var(--surface2)', border: '1px solid var(--border)' }}>
+          <div
+            className="rounded-xl p-4 space-y-3"
+            style={{ background: 'var(--surface2)', border: '1px solid var(--border)' }}
+          >
             <div className="flex items-center gap-2">
               <Gauge size={16} style={{ color: 'var(--purple)' }} />
-              <span className="text-sm font-medium" style={{ color: 'var(--text)' }}>Yazma Hızı</span>
+              <span className="text-sm font-medium" style={{ color: 'var(--text)' }}>
+                Yazma Hızı
+              </span>
               <span className="ml-auto text-xs" style={{ color: 'var(--text3)' }}>
-                {settings.streamSpeed < 10 ? 'Hızlı' : settings.streamSpeed < 20 ? 'Normal' : 'Yavaş'}
+                {settings.streamSpeed < 10
+                  ? 'Hızlı'
+                  : settings.streamSpeed < 20
+                    ? 'Normal'
+                    : 'Yavaş'}
               </span>
             </div>
             <input
@@ -152,10 +211,15 @@ export default function SettingsPanel({ onClose }: SettingsPanelProps) {
           </div>
 
           {/* Keyboard Shortcuts */}
-          <div className="rounded-xl p-4 space-y-2" style={{ background: 'var(--surface2)', border: '1px solid var(--border)' }}>
+          <div
+            className="rounded-xl p-4 space-y-2"
+            style={{ background: 'var(--surface2)', border: '1px solid var(--border)' }}
+          >
             <div className="flex items-center gap-2 mb-2">
               <Keyboard size={16} style={{ color: 'var(--accent)' }} />
-              <span className="text-sm font-medium" style={{ color: 'var(--text)' }}>Klavye Kısayolları</span>
+              <span className="text-sm font-medium" style={{ color: 'var(--text)' }}>
+                Klavye Kısayolları
+              </span>
             </div>
             <div className="grid grid-cols-2 gap-2 text-[11px]">
               {[
@@ -171,7 +235,14 @@ export default function SettingsPanel({ onClose }: SettingsPanelProps) {
                 ['Escape', 'İptal / Kapat'],
               ].map(([key, desc]) => (
                 <div key={key} className="flex items-center gap-2">
-                  <kbd className="px-1.5 py-0.5 rounded text-[10px] font-mono" style={{ background: 'var(--surface3)', border: '1px solid var(--border2)', color: 'var(--accent)' }}>
+                  <kbd
+                    className="px-1.5 py-0.5 rounded text-[10px] font-mono"
+                    style={{
+                      background: 'var(--surface3)',
+                      border: '1px solid var(--border2)',
+                      color: 'var(--accent)',
+                    }}
+                  >
                     {key}
                   </kbd>
                   <span style={{ color: 'var(--text2)' }}>{desc}</span>
@@ -181,30 +252,47 @@ export default function SettingsPanel({ onClose }: SettingsPanelProps) {
           </div>
 
           {/* Data Management */}
-          <div className="rounded-xl p-4 space-y-3" style={{ background: 'var(--surface2)', border: '1px solid var(--border)' }}>
+          <div
+            className="rounded-xl p-4 space-y-3"
+            style={{ background: 'var(--surface2)', border: '1px solid var(--border)' }}
+          >
             <div className="flex items-center gap-2">
               <Palette size={16} style={{ color: 'var(--orange)' }} />
-              <span className="text-sm font-medium" style={{ color: 'var(--text)' }}>Veri Yönetimi</span>
+              <span className="text-sm font-medium" style={{ color: 'var(--text)' }}>
+                Veri Yönetimi
+              </span>
             </div>
             <div className="flex flex-col gap-2">
               <button
                 onClick={handleExportChats}
                 className="flex items-center gap-2 px-3 py-2 rounded-lg text-xs transition-all"
-                style={{ background: 'var(--surface3)', border: '1px solid var(--border2)', color: 'var(--green)' }}
+                style={{
+                  background: 'var(--surface3)',
+                  border: '1px solid var(--border2)',
+                  color: 'var(--green)',
+                }}
               >
                 <Download size={12} /> Sohbetleri Dışa Aktar (JSON)
               </button>
               <button
                 onClick={handleImportChats}
                 className="flex items-center gap-2 px-3 py-2 rounded-lg text-xs transition-all"
-                style={{ background: 'var(--surface3)', border: '1px solid var(--border2)', color: 'var(--accent)' }}
+                style={{
+                  background: 'var(--surface3)',
+                  border: '1px solid var(--border2)',
+                  color: 'var(--accent)',
+                }}
               >
                 <Upload size={12} /> Sohbetleri İçe Aktar
               </button>
               <button
                 onClick={handleClearAll}
                 className="flex items-center gap-2 px-3 py-2 rounded-lg text-xs transition-all"
-                style={{ background: 'rgba(255,107,107,0.1)', border: '1px solid rgba(255,107,107,0.2)', color: 'var(--red)' }}
+                style={{
+                  background: 'rgba(255,107,107,0.1)',
+                  border: '1px solid rgba(255,107,107,0.2)',
+                  color: 'var(--red)',
+                }}
               >
                 <Trash2 size={12} /> Tüm Verileri Temizle
               </button>

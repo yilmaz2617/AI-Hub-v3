@@ -12,7 +12,9 @@ export function initRealtimeSync(): () => void {
         let hasChanges = false;
 
         for (const [key, value] of Object.entries(incomingState)) {
-          if (JSON.stringify((currentState as Record<string, unknown>)[key]) !== JSON.stringify(value)) {
+          if (
+            JSON.stringify((currentState as Record<string, unknown>)[key]) !== JSON.stringify(value)
+          ) {
             (merged as Record<string, unknown>)[key] = value;
             hasChanges = true;
           }

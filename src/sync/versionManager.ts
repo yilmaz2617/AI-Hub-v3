@@ -24,7 +24,11 @@ class VersionManager {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(this.versions));
   }
 
-  createSnapshot(state: AppState, source: VersionSnapshot['source'], label?: string): VersionSnapshot {
+  createSnapshot(
+    state: AppState,
+    source: VersionSnapshot['source'],
+    label?: string
+  ): VersionSnapshot {
     const snapshot: VersionSnapshot = {
       id: `v-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
       timestamp: Date.now(),

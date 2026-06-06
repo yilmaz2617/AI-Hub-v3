@@ -21,4 +21,3 @@ export function useVersion() {
 
   return { version, refresh };
 }
-

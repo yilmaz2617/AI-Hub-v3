@@ -8,19 +8,21 @@ interface SyncStatus {
 }
 
 export const SyncPanel: React.FC = () => {
-  const [status, setStatus] = useState<<SyncStatus>({
-    isSyncing: false,
-    lastSync: null,
-    error: null,
-  });
+  const [status, setStatus] =
+    useState << SyncStatus >
+    {
+      isSyncing: false,
+      lastSync: null,
+      error: null,
+    };
   const { theme } = useAppStore();
 
   const handleSync = useCallback(async () => {
     setStatus(prev => ({ ...prev, isSyncing: true, error: null }));
-    
+
     try {
       await new Promise(resolve => setTimeout(resolve, 2000));
-      
+
       setStatus({
         isSyncing: false,
         lastSync: new Date().toISOString(),
@@ -38,7 +40,7 @@ export const SyncPanel: React.FC = () => {
   return (
     <div className="p-6 space-y-4">
       <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Sync Panel</h2>
-      
+
       <div className="flex items-center gap-4">
         <button
           onClick={handleSync}
@@ -47,7 +49,7 @@ export const SyncPanel: React.FC = () => {
         >
           {status.isSyncing ? 'Syncing...' : 'Sync Now'}
         </button>
-        
+
         {status.lastSync && (
           <span className="text-sm text-gray-600 dark:text-gray-300">
             Last sync: {new Date(status.lastSync).toLocaleString()}
@@ -65,4 +67,3 @@ export const SyncPanel: React.FC = () => {
 };
 
 export default SyncPanel;
-

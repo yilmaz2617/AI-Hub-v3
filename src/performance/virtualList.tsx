@@ -9,7 +9,11 @@ interface VirtualListProps<T> {
 }
 
 export function VirtualList<T>({
-  items, itemHeight, renderItem, containerHeight, overscan = 5,
+  items,
+  itemHeight,
+  renderItem,
+  containerHeight,
+  overscan = 5,
 }: VirtualListProps<T>) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [scrollTop, setScrollTop] = useState(0);
@@ -17,7 +21,10 @@ export function VirtualList<T>({
 
   const visibleRange = useMemo(() => {
     const startIdx = Math.max(0, Math.floor(scrollTop / itemHeight) - overscan);
-    const endIdx = Math.min(items.length - 1, Math.ceil((scrollTop + containerHeight) / itemHeight) + overscan);
+    const endIdx = Math.min(
+      items.length - 1,
+      Math.ceil((scrollTop + containerHeight) / itemHeight) + overscan
+    );
     return { startIdx, endIdx };
   }, [scrollTop, itemHeight, containerHeight, items.length, overscan]);
 
@@ -36,7 +43,16 @@ export function VirtualList<T>({
     const result = [];
     for (let i = visibleRange.startIdx; i <= visibleRange.endIdx; i++) {
       result.push(
-        <div key={i} style={{ position: 'absolute', top: i * itemHeight, height: itemHeight, left: 0, right: 0 }}>
+        <div
+          key={i}
+          style={{
+            position: 'absolute',
+            top: i * itemHeight,
+            height: itemHeight,
+            left: 0,
+            right: 0,
+          }}
+        >
           {renderItem(items[i], i)}
         </div>
       );
@@ -45,7 +61,10 @@ export function VirtualList<T>({
   }, [visibleRange, items, itemHeight, renderItem]);
 
   return (
-    <div ref={containerRef} style={{ height: containerHeight, overflow: 'auto', position: 'relative' }}>
+    <div
+      ref={containerRef}
+      style={{ height: containerHeight, overflow: 'auto', position: 'relative' }}
+    >
       <div style={{ height: totalHeight, position: 'relative' }}>{visibleItems}</div>
     </div>
   );

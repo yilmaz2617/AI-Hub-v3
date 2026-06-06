@@ -22,4 +22,3 @@ export function usePerformance() {
 
   return { metrics, measure };
 }
-

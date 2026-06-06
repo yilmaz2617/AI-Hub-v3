@@ -1,10 +1,10 @@
-﻿import { describe, it, expect, beforeEach } from "vitest";
-import { useAppStore } from "./appStore";
+﻿import { describe, it, expect, beforeEach } from 'vitest';
+import { useAppStore } from './appStore';
 
-describe("appStore", () => {
+describe('appStore', () => {
   beforeEach(() => {
     useAppStore.setState({
-      activePanel: "chat",
+      activePanel: 'chat',
       isSidebarOpen: true,
       toasts: [],
       apiKeys: {},
@@ -13,12 +13,12 @@ describe("appStore", () => {
     });
   });
 
-  it("panel degistirir", () => {
-    useAppStore.getState().setPanel("image");
-    expect(useAppStore.getState().activePanel).toBe("image");
+  it('panel degistirir', () => {
+    useAppStore.getState().setPanel('image');
+    expect(useAppStore.getState().activePanel).toBe('image');
   });
 
-  it("sidebar toggle", () => {
+  it('sidebar toggle', () => {
     const before = useAppStore.getState().isSidebarOpen;
     useAppStore.getState().toggleSidebar();
     expect(useAppStore.getState().isSidebarOpen).toBe(!before);

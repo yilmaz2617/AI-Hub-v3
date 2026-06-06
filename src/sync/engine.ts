@@ -26,14 +26,16 @@ class SyncEngine {
         this.listeners.forEach(cb => cb(event.data));
       };
     } catch {
-      window.addEventListener('storage', (e) => {
+      window.addEventListener('storage', e => {
         if (e.key === SYNC_CHANNEL_NAME) {
           try {
             const msg = JSON.parse(e.newValue || '{}') as SyncMessage;
             if (msg.deviceId !== this.deviceId) {
               this.listeners.forEach(cb => cb(msg));
             }
-          } catch { /* ignore */ }
+          } catch {
+            /* ignore */
+          }
         }
       });
     }

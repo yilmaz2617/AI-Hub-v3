@@ -31,10 +31,9 @@ export function useWebBridge() {
         return false;
       }
       // Extension'a ping at
-      const response = await chrome.runtime.sendMessage(
-        EXTENSION_ID,
-        { type: 'GET_STATUS' } as RuntimeMessage
-      );
+      const response = await chrome.runtime.sendMessage(EXTENSION_ID, {
+        type: 'GET_STATUS',
+      } as RuntimeMessage);
       const resp = response as RuntimeResponse;
       if (resp && !resp.error) {
         store.setExtensionInstalled(true);
@@ -52,47 +51,47 @@ export function useWebBridge() {
   }, [store]);
 
   // WebSocket sunucusuna bağlan
-  const connect = useCallback(async (url?: string) => {
-    const targetUrl = url || store.serverUrl;
-    store.setStatus('connecting');
-    store.setError(null);
+  const connect = useCallback(
+    async (url?: string) => {
+      const targetUrl = url || store.serverUrl;
+      store.setStatus('connecting');
+      store.setError(null);
 
-    try {
-      if (typeof chrome === 'undefined' || !chrome.runtime) {
-        throw new Error('Chrome Extension API bulunamadı. Kimi WebBridge kurulu mu?');
+      try {
+        if (typeof chrome === 'undefined' || !chrome.runtime) {
+          throw new Error('Chrome Extension API bulunamadı. Kimi WebBridge kurulu mu?');
+        }
+
+        const response = await chrome.runtime.sendMessage(EXTENSION_ID, {
+          type: 'CONNECT',
+          url: targetUrl,
+        } as RuntimeMessage);
+        const resp = response as RuntimeResponse;
+
+        if (resp?.error) {
+          throw new Error(resp.error);
+        }
+
+        if (resp?.success) {
+          store.setStatus('connected');
+          store.setServerUrl(targetUrl);
+        } else {
+          throw new Error('Bağlantı başarısız');
+        }
+      } catch (err) {
+        const message = err instanceof Error ? err.message : 'Bilinmeyen hata';
+        store.setStatus('error');
+        store.setError(message);
       }
-
-      const response = await chrome.runtime.sendMessage(
-        EXTENSION_ID,
-        { type: 'CONNECT', url: targetUrl } as RuntimeMessage
-      );
-      const resp = response as RuntimeResponse;
-
-      if (resp?.error) {
-        throw new Error(resp.error);
-      }
-
-      if (resp?.success) {
-        store.setStatus('connected');
-        store.setServerUrl(targetUrl);
-      } else {
-        throw new Error('Bağlantı başarısız');
-      }
-    } catch (err) {
-      const message = err instanceof Error ? err.message : 'Bilinmeyen hata';
-      store.setStatus('error');
-      store.setError(message);
-    }
-  }, [store]);
+    },
+    [store]
+  );
 
   // Bağlantıyı kes
   const disconnect = useCallback(async () => {
     try {
       if (typeof chrome !== 'undefined' && chrome.runtime) {
-        await chrome.runtime.sendMessage(
-          EXTENSION_ID,
-          { type: 'DISCONNECT' } as RuntimeMessage
-        );
+        await chrome.runtime.sendMessage(EXTENSION_ID, { type: 'DISCONNECT' } as RuntimeMessage);
       }
     } catch {
       // Ignore
@@ -105,100 +104,115 @@ export function useWebBridge() {
   }, [store]);
 
   // Bağlantı testi
-  const testConnection = useCallback(async (url?: string): Promise<boolean> => {
-    const targetUrl = url || store.serverUrl;
-    try {
-      if (typeof chrome === 'undefined' || !chrome.runtime) {
+  const testConnection = useCallback(
+    async (url?: string): Promise<boolean> => {
+      const targetUrl = url || store.serverUrl;
+      try {
+        if (typeof chrome === 'undefined' || !chrome.runtime) {
+          return false;
+        }
+        const response = await chrome.runtime.sendMessage(EXTENSION_ID, {
+          type: 'TEST_CONNECTION',
+          url: targetUrl,
+        } as RuntimeMessage);
+        const resp = response as RuntimeResponse;
+        return resp?.ok === true;
+      } catch {
         return false;
       }
-      const response = await chrome.runtime.sendMessage(
-        EXTENSION_ID,
-        { type: 'TEST_CONNECTION', url: targetUrl } as RuntimeMessage
-      );
-      const resp = response as RuntimeResponse;
-      return resp?.ok === true;
-    } catch {
-      return false;
-    }
-  }, [store]);
+    },
+    [store]
+  );
 
   // Tool çalıştır
-  const executeTool = useCallback(async (
-    name: string,
-    args: Record<string, unknown>
-  ): Promise<unknown> => {
-    const callId = `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+  const executeTool = useCallback(
+    async (name: string, args: Record<string, unknown>): Promise<unknown> => {
+      const callId = `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
 
-    store.addToolCall({
-      id: callId,
-      name,
-      args,
-      timestamp: Date.now(),
-    });
+      store.addToolCall({
+        id: callId,
+        name,
+        args,
+        timestamp: Date.now(),
+      });
 
-    try {
-      if (typeof chrome === 'undefined' || !chrome.runtime) {
-        throw new Error('Chrome Extension API bulunamadı');
-      }
+      try {
+        if (typeof chrome === 'undefined' || !chrome.runtime) {
+          throw new Error('Chrome Extension API bulunamadı');
+        }
 
-      // WebBridge extension'a tool_call gönder
-      // Not: Extension içindeki WebSocket üzerinden iletilir
-      const response = await chrome.runtime.sendMessage(
-        EXTENSION_ID,
-        {
+        // WebBridge extension'a tool_call gönder
+        // Not: Extension içindeki WebSocket üzerinden iletilir
+        const response = await chrome.runtime.sendMessage(EXTENSION_ID, {
           type: 'TOOL_CALL',
           payload: { name, args },
-        }
-      );
+        });
 
-      const result: ToolResult = {
-        id: callId,
-        name,
-        data: response,
-        timestamp: Date.now(),
-      };
-      store.setLastResult(result);
-      return response;
-    } catch (err) {
-      const message = err instanceof Error ? err.message : 'Tool çalıştırma hatası';
-      const result: ToolResult = {
-        id: callId,
-        name,
-        error: message,
-        timestamp: Date.now(),
-      };
-      store.setLastResult(result);
-      throw err;
-    }
-  }, [store]);
+        const result: ToolResult = {
+          id: callId,
+          name,
+          data: response,
+          timestamp: Date.now(),
+        };
+        store.setLastResult(result);
+        return response;
+      } catch (err) {
+        const message = err instanceof Error ? err.message : 'Tool çalıştırma hatası';
+        const result: ToolResult = {
+          id: callId,
+          name,
+          error: message,
+          timestamp: Date.now(),
+        };
+        store.setLastResult(result);
+        throw err;
+      }
+    },
+    [store]
+  );
 
   // Önceden tanımlı tool'lar
-  const navigate = useCallback((url: string, options?: { newTab?: boolean }) => {
-    return executeTool('navigate', { url, newTab: options?.newTab ?? false });
-  }, [executeTool]);
+  const navigate = useCallback(
+    (url: string, options?: { newTab?: boolean }) => {
+      return executeTool('navigate', { url, newTab: options?.newTab ?? false });
+    },
+    [executeTool]
+  );
 
   const snapshot = useCallback(() => {
     return executeTool('snapshot', {});
   }, [executeTool]);
 
-  const click = useCallback((selector: string) => {
-    return executeTool('click', { selector });
-  }, [executeTool]);
+  const click = useCallback(
+    (selector: string) => {
+      return executeTool('click', { selector });
+    },
+    [executeTool]
+  );
 
-  const fill = useCallback((selector: string, value: string) => {
-    return executeTool('fill', { selector, value });
-  }, [executeTool]);
+  const fill = useCallback(
+    (selector: string, value: string) => {
+      return executeTool('fill', { selector, value });
+    },
+    [executeTool]
+  );
 
-  const screenshot = useCallback((options?: { format?: 'png' | 'jpeg'; selector?: string }) => {
-    return executeTool('screenshot', {
-      format: options?.format ?? 'png',
-      selector: options?.selector,
-    });
-  }, [executeTool]);
+  const screenshot = useCallback(
+    (options?: { format?: 'png' | 'jpeg'; selector?: string }) => {
+      return executeTool('screenshot', {
+        format: options?.format ?? 'png',
+        selector: options?.selector,
+      });
+    },
+    [executeTool]
+  );
 
-  const evaluate = useCallback((code: string) => {
-    return executeTool('evaluate', { code });
-  }, [executeTool]);
+  const evaluate = useCallback(
+    (code: string) => {
+      return executeTool('evaluate', { code });
+    },
+    [executeTool]
+  );
 
   // Sayfa yüklendiğinde extension'ı kontrol et
   useEffect(() => {
@@ -230,6 +244,3 @@ export function useWebBridge() {
     setServerUrl: store.setServerUrl,
   };
 }
-
-
-

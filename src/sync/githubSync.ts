@@ -64,7 +64,7 @@ class GitHubSync {
     const data = await res.json();
     const file = data.files[GIST_FILENAME];
     if (!file) return null;
-    const content = file.content || await fetch(file.raw_url).then(r => r.text());
+    const content = file.content || (await fetch(file.raw_url).then(r => r.text()));
     return JSON.parse(content) as AppState;
   }
 

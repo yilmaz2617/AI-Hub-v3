@@ -10,14 +10,14 @@ interface SettingsState {
   animationsEnabled: boolean;
   streamSpeed: number; // ms per char
   compactMode: boolean;
-  
+
   toggleSound: () => void;
   setFontSize: (size: number) => void;
   setLineHeight: (height: number) => void;
   toggleAnimations: () => void;
   setStreamSpeed: (speed: number) => void;
   toggleCompactMode: () => void;
-  
+
   loadSettings: () => void;
   saveSettings: () => void;
 }
@@ -36,11 +36,26 @@ export const useSettingsStore = create<SettingsState>((set, get) => ({
     set(s => ({ soundEnabled: !s.soundEnabled }));
     get().saveSettings();
   },
-  setFontSize: (size) => { set({ fontSize: size }); get().saveSettings(); },
-  setLineHeight: (height) => { set({ lineHeight: height }); get().saveSettings(); },
-  toggleAnimations: () => { set(s => ({ animationsEnabled: !s.animationsEnabled })); get().saveSettings(); },
-  setStreamSpeed: (speed) => { set({ streamSpeed: speed }); get().saveSettings(); },
-  toggleCompactMode: () => { set(s => ({ compactMode: !s.compactMode })); get().saveSettings(); },
+  setFontSize: size => {
+    set({ fontSize: size });
+    get().saveSettings();
+  },
+  setLineHeight: height => {
+    set({ lineHeight: height });
+    get().saveSettings();
+  },
+  toggleAnimations: () => {
+    set(s => ({ animationsEnabled: !s.animationsEnabled }));
+    get().saveSettings();
+  },
+  setStreamSpeed: speed => {
+    set({ streamSpeed: speed });
+    get().saveSettings();
+  },
+  toggleCompactMode: () => {
+    set(s => ({ compactMode: !s.compactMode }));
+    get().saveSettings();
+  },
 
   loadSettings: () => {
     try {
@@ -49,12 +64,27 @@ export const useSettingsStore = create<SettingsState>((set, get) => ({
         const parsed = JSON.parse(stored);
         set(parsed);
       }
-    } catch { /* ignore */ }
+    } catch {
+      /* ignore */
+    }
   },
   saveSettings: () => {
     try {
-      const { soundEnabled, fontSize, lineHeight, animationsEnabled, streamSpeed, compactMode } = get();
-      localStorage.setItem(STORAGE_KEY, JSON.stringify({ soundEnabled, fontSize, lineHeight, animationsEnabled, streamSpeed, compactMode }));
-    } catch { /* ignore */ }
+      const { soundEnabled, fontSize, lineHeight, animationsEnabled, streamSpeed, compactMode } =
+        get();
+      localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify({
+          soundEnabled,
+          fontSize,
+          lineHeight,
+          animationsEnabled,
+          streamSpeed,
+          compactMode,
+        })
+      );
+    } catch {
+      /* ignore */
+    }
   },
 }));

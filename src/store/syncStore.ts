@@ -18,19 +18,19 @@ interface SyncStoreState {
 
 export const useSyncStore = create<SyncStoreState>()(
   persist(
-    (set) => ({
+    set => ({
       autoSync: true,
       crossTabRealtime: true,
       githubBackup: true,
       conflictModal: false,
       offlineQueue: true,
       syncInterval: 2000,
-      setAutoSync: (enabled) => set({ autoSync: enabled }),
-      setCrossTabRealtime: (enabled) => set({ crossTabRealtime: enabled }),
-      setGitHubBackup: (enabled) => set({ githubBackup: enabled }),
-      setConflictModal: (enabled) => set({ conflictModal: enabled }),
-      setOfflineQueue: (enabled) => set({ offlineQueue: enabled }),
-      setSyncInterval: (ms) => set({ syncInterval: ms }),
+      setAutoSync: enabled => set({ autoSync: enabled }),
+      setCrossTabRealtime: enabled => set({ crossTabRealtime: enabled }),
+      setGitHubBackup: enabled => set({ githubBackup: enabled }),
+      setConflictModal: enabled => set({ conflictModal: enabled }),
+      setOfflineQueue: enabled => set({ offlineQueue: enabled }),
+      setSyncInterval: ms => set({ syncInterval: ms }),
     }),
     { name: 'ai-hub-sync-settings' }
   )

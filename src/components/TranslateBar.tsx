@@ -46,7 +46,7 @@ export default function TranslateBar({ onTranslate, compact }: TranslateBarProps
         style={{ color: 'var(--text)' }}
       />
       <button
-        onClick={() => setDirection(d => d === 'tr-en' ? 'en-tr' : 'tr-en')}
+        onClick={() => setDirection(d => (d === 'tr-en' ? 'en-tr' : 'tr-en'))}
         className="flex items-center gap-1 text-xs px-2 py-1 rounded transition-colors hover:bg-[var(--surface3)]"
         style={{ color: 'var(--text2)', border: '1px solid var(--border)' }}
         title="Yön değiştir"

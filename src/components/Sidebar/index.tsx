@@ -1,5 +1,5 @@
-﻿import React, { memo } from "react";
-import { useAppStore } from "../../store/appStore";
+﻿import React, { memo } from 'react';
+import { useAppStore } from '../../store/appStore';
 
 interface MenuItem {
   id: string;
@@ -8,13 +8,13 @@ interface MenuItem {
 }
 
 const menuItems: MenuItem[] = [
-  { id: "chat", label: "Chat", icon: "💬" },
-  { id: "research-hub", label: "Research & Improve", icon: "🔬" },
-  { id: "image-gen", label: "Image Gen", icon: "🎨" },
-  { id: "api-status", label: "API Status", icon: "📊" },
-  { id: "sync", label: "Sync", icon: "🔄" },
-  { id: "versions", label: "Versiyonlar", icon: "📜" },
-  { id: "settings", label: "Settings", icon: "⚙️" },
+  { id: 'chat', label: 'Chat', icon: '💬' },
+  { id: 'research-hub', label: 'Research & Improve', icon: '🔬' },
+  { id: 'image-gen', label: 'Image Gen', icon: '🎨' },
+  { id: 'api-status', label: 'API Status', icon: '📊' },
+  { id: 'sync', label: 'Sync', icon: '🔄' },
+  { id: 'versions', label: 'Versiyonlar', icon: '📜' },
+  { id: 'settings', label: 'Settings', icon: '⚙️' },
 ];
 
 export const Sidebar: React.FC = memo(() => {
@@ -28,19 +28,19 @@ export const Sidebar: React.FC = memo(() => {
       </div>
 
       <nav className="flex-1 p-2 space-y-1">
-        {menuItems.map((item) => (
+        {menuItems.map(item => (
           <button
             key={item.id}
             onClick={() => setActivePanel(item.id)}
             className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
               activePanel === item.id
-                ? "bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400"
-                : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400'
+                : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
             }`}
           >
             <span className="text-lg">{item.icon}</span>
             <span>{item.label}</span>
-            {item.id === "sync" && (
+            {item.id === 'sync' && (
               <span className="ml-auto w-2 h-2 bg-green-500 rounded-full" title="Sync active" />
             )}
           </button>

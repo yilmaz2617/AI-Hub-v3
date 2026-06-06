@@ -18,26 +18,28 @@ interface ResearchState {
   clearResults: () => void;
 }
 
-export const useResearchStore = create<ResearchState>((set) => ({
+export const useResearchStore = create<ResearchState>(set => ({
   query: '',
   results: [],
   loading: false,
   error: null,
 
-  setQuery: (query) => set({ query }),
+  setQuery: query => set({ query }),
 
-  startResearch: async (query) => {
+  startResearch: async query => {
     set({ loading: true, error: null });
     try {
       await new Promise(resolve => setTimeout(resolve, 2000));
       set({
-        results: [{
-          id: crypto.randomUUID(),
-          title: query + ' - Genel Bakis',
-          summary: 'Arastirma sonuclari: ' + query + ' hakkinda detayli bilgi...',
-          source: 'Kimi AI',
-          timestamp: Date.now(),
-        }],
+        results: [
+          {
+            id: crypto.randomUUID(),
+            title: query + ' - Genel Bakis',
+            summary: 'Arastirma sonuclari: ' + query + ' hakkinda detayli bilgi...',
+            source: 'Kimi AI',
+            timestamp: Date.now(),
+          },
+        ],
         loading: false,
       });
     } catch (err) {

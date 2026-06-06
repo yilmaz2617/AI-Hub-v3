@@ -2,7 +2,13 @@
 
 // Runtime Message Types
 export interface RuntimeMessage {
-  type: 'GET_STATUS' | 'CONNECT' | 'DISCONNECT' | 'TEST_CONNECTION' | 'GENERATE_CONNECTION' | 'TOOL_CALL';
+  type:
+    | 'GET_STATUS'
+    | 'CONNECT'
+    | 'DISCONNECT'
+    | 'TEST_CONNECTION'
+    | 'GENERATE_CONNECTION'
+    | 'TOOL_CALL';
   url?: string;
   serverBase?: string;
   payload?: {
@@ -44,7 +50,7 @@ export interface ToolResultPayload {
 }
 
 // Tool Types
-export type ToolName = 
+export type ToolName =
   | 'navigate'
   | 'find_tab'
   | 'evaluate'
