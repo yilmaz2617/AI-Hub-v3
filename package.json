@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "autoprefixer": "^10.4.0",
+    "clsx": "^2.1.1",
     "date-fns": "^3.6.0",
     "lodash-es": "^4.17.21",
     "react": "^19.0.0",
