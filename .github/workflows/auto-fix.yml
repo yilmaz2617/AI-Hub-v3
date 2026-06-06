@@ -1,0 +1,44 @@
+name: Auto Fix & Lint
+
+on:
+  push:
+    branches: [main, dev]
+  pull_request:
+    branches: [main]
+
+jobs:
+  auto-fix:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Run ESLint --fix
+        run: npx eslint . --ext ts,tsx --fix || true
+      
+      - name: Run Prettier
+        run: npx prettier --write "src/**/*.{ts,tsx}" || true
+      
+      - name: Type check
+        run: npx tsc --noEmit || true
+      
+      - name: Run tests
+        run: npm test || true
+      
+      - name: Auto-commit fixes
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "🤖 Auto-fix: lint & format"
+          branch: ${{ github.head_ref || github.ref_name }}
