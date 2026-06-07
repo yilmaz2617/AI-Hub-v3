@@ -8,11 +8,13 @@ interface SyncStatus {
 }
 
 export const SyncPanel: React.FC = () => {
-  const [status, setStatus] = useState<SyncStatus>({
-    isSyncing: false,
-    lastSync: null,
-    error: null,
-  });
+  const [status, setStatus] =
+    useState << SyncStatus >
+    {
+      isSyncing: false,
+      lastSync: null,
+      error: null,
+    };
   const { theme } = useAppStore();
 
   const handleSync = useCallback(async () => {
@@ -33,7 +35,7 @@ export const SyncPanel: React.FC = () => {
         error: error instanceof Error ? error.message : 'Sync failed',
       }));
     }
-  }, [setStatus]);
+  }, []);
 
   return (
     <div className="p-6 space-y-4">
