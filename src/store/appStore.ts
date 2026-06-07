@@ -116,3 +116,15 @@ export function initAutoSync(): () => void {
 
   return unsubscribeAutoSync;
 }
+
+export function setPanel(panel: string): void {
+  useAppStore.getState().setActivePanel(panel);
+}
+
+export function toggleSidebar(): void {
+  useAppStore.getState().toggleSidebar();
+}
+
+export function setTheme(theme: 'light' | 'dark' | 'system'): void {
+  useAppStore.getState().setTheme(theme);
+}

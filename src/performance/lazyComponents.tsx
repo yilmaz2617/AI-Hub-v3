@@ -7,3 +7,15 @@ export const ApiStatusPanel = lazy(() => import('../components/panels/ApiStatusP
 export const SyncPanel = lazy(() => import('../components/panels/SyncPanel'));
 export const VersionPanel = lazy(() => import('../components/panels/VersionPanel'));
 export const SettingsPanel = lazy(() => import('../components/panels/SettingsPanel'));
+
+const lazyComponents = {
+  ChatPanel,
+  ResearchImproveHub,
+  ImageGenPanel,
+  ApiStatusPanel,
+  SyncPanel,
+  VersionPanel,
+  SettingsPanel,
+};
+
+export default lazyComponents;
