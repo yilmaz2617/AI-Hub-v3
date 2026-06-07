@@ -3,9 +3,18 @@ import { useThemeStore } from '@/store/themeStore';
 import { useChatStore } from '@/store/chatStore';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  MessageSquare, Crown, Image, Wifi, Zap,
-  ChevronLeft, ChevronRight, Plus, Trash2,
-  Keyboard, Brain, ArrowRightLeft
+  MessageSquare,
+  Crown,
+  Image,
+  Wifi,
+  Zap,
+  ChevronLeft,
+  ChevronRight,
+  Plus,
+  Trash2,
+  Keyboard,
+  Brain,
+  ArrowRightLeft,
 } from 'lucide-react';
 import { useEffect } from 'react';
 import type { PanelId } from '@/types';
@@ -24,9 +33,12 @@ const PANELS: { id: PanelId; label: string; icon: typeof MessageSquare; shortcut
 export default function Sidebar() {
   const { activePanel, setPanel, isSidebarOpen, toggleSidebar } = useAppStore();
   const applyTheme = useThemeStore(s => s.applyTheme);
-  const { sessions, activeSessionId, createSession, deleteSession, setActiveSession } = useChatStore();
+  const { sessions, activeSessionId, createSession, deleteSession, setActiveSession } =
+    useChatStore();
 
-  useEffect(() => { applyTheme(); }, [applyTheme]);
+  useEffect(() => {
+    applyTheme();
+  }, [applyTheme]);
 
   return (
     <motion.aside
@@ -44,8 +56,14 @@ export default function Sidebar() {
         {isSidebarOpen ? <ChevronLeft size={14} /> : <ChevronRight size={14} />}
       </button>
 
-      <div className="flex items-center gap-2 px-4 py-3" style={{ borderBottom: '1px solid var(--border)' }}>
-        <div className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: 'var(--accent)' }}>
+      <div
+        className="flex items-center gap-2 px-4 py-3"
+        style={{ borderBottom: '1px solid var(--border)' }}
+      >
+        <div
+          className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0"
+          style={{ background: 'var(--accent)' }}
+        >
           <Zap size={16} style={{ color: '#fff' }} />
         </div>
         <AnimatePresence>
@@ -56,8 +74,22 @@ export default function Sidebar() {
               exit={{ opacity: 0 }}
               className="flex items-center gap-2 overflow-hidden"
             >
-              <span className="font-bold text-sm whitespace-nowrap" style={{ color: 'var(--text)' }}>AI HUB</span>
-              <span className="text-[10px] px-1.5 py-0.5 rounded-full whitespace-nowrap" style={{ background: 'var(--surface2)', color: 'var(--accent)', border: '1px solid var(--border)' }}>v3</span>
+              <span
+                className="font-bold text-sm whitespace-nowrap"
+                style={{ color: 'var(--text)' }}
+              >
+                AI HUB
+              </span>
+              <span
+                className="text-[10px] px-1.5 py-0.5 rounded-full whitespace-nowrap"
+                style={{
+                  background: 'var(--surface2)',
+                  color: 'var(--accent)',
+                  border: '1px solid var(--border)',
+                }}
+              >
+                v3
+              </span>
             </motion.div>
           )}
         </AnimatePresence>
@@ -112,8 +144,14 @@ export default function Sidebar() {
             exit={{ opacity: 0 }}
             className="flex-1 overflow-hidden flex flex-col min-h-0"
           >
-            <div className="px-3 py-2 flex items-center justify-between" style={{ borderTop: '1px solid var(--border)' }}>
-              <span className="text-[10px] uppercase tracking-wider font-semibold" style={{ color: 'var(--text3)' }}>
+            <div
+              className="px-3 py-2 flex items-center justify-between"
+              style={{ borderTop: '1px solid var(--border)' }}
+            >
+              <span
+                className="text-[10px] uppercase tracking-wider font-semibold"
+                style={{ color: 'var(--text3)' }}
+              >
                 Sohbetler
               </span>
               <button
@@ -124,7 +162,10 @@ export default function Sidebar() {
                 <Plus size={12} /> Yeni
               </button>
             </div>
-            <div className="flex-1 overflow-y-auto px-2 pb-2 space-y-0.5" style={{ scrollbarWidth: 'thin' }}>
+            <div
+              className="flex-1 overflow-y-auto px-2 pb-2 space-y-0.5"
+              style={{ scrollbarWidth: 'thin' }}
+            >
               {sessions.map(s => (
                 <button
                   key={s.id}
@@ -133,7 +174,10 @@ export default function Sidebar() {
                   style={{
                     background: s.id === activeSessionId ? 'var(--surface2)' : 'transparent',
                     color: s.id === activeSessionId ? 'var(--text)' : 'var(--text2)',
-                    border: s.id === activeSessionId ? '1px solid var(--border2)' : '1px solid transparent',
+                    border:
+                      s.id === activeSessionId
+                        ? '1px solid var(--border2)'
+                        : '1px solid transparent',
                   }}
                 >
                   <MessageSquare size={12} className="flex-shrink-0 opacity-50" />
@@ -141,7 +185,10 @@ export default function Sidebar() {
                   <Trash2
                     size={10}
                     className="opacity-0 group-hover:opacity-50 hover:!opacity-100 flex-shrink-0 transition-opacity"
-                    onClick={e => { e.stopPropagation(); deleteSession(s.id); }}
+                    onClick={e => {
+                      e.stopPropagation();
+                      deleteSession(s.id);
+                    }}
                   />
                 </button>
               ))}
@@ -150,7 +197,10 @@ export default function Sidebar() {
         )}
       </AnimatePresence>
 
-      <div className="mt-auto p-2 flex items-center gap-2" style={{ borderTop: '1px solid var(--border)' }}>
+      <div
+        className="mt-auto p-2 flex items-center gap-2"
+        style={{ borderTop: '1px solid var(--border)' }}
+      >
         <ThemeSwitcher />
         <AnimatePresence>
           {isSidebarOpen && (

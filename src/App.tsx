@@ -30,7 +30,7 @@ const panelMap: Record<string, React.ComponentType> = {
 };
 
 function App() {
-  const activePanel = useAppStore((state) => state.activePanel || 'chat');
+  const activePanel = useAppStore(state => state.activePanel || 'chat');
 
   useRealtime();
 
@@ -74,11 +74,3 @@ function App() {
 }
 
 export default App;
-
-
-
-
-
-
-
-

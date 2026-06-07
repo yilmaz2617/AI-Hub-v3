@@ -4,61 +4,214 @@
 import type { ModelInfo, ImageModel, ThemeConfig, QuickPrompt } from '@/types';
 
 export const PROVIDERS = [
-  { id: 'groq', name: 'Groq', desc: 'Ultra hızlı LPU çipler. LLaMA, Mixtral, DeepSeek.', emoji: '⚡' },
-  { id: 'openrouter', name: 'OpenRouter', desc: 'Tek key ile 200+ model. 25+ ücretsiz model.', emoji: '🔀' },
-  { id: 'gemini', name: 'Google Gemini', desc: 'Gemini 2.0 Flash, 2.5 Pro. 1M token context.', emoji: '🔮' },
-  { id: 'anthropic', name: 'Anthropic Claude', desc: 'Claude Sonnet 4, Opus 4. Kod ve analizde üstün.', emoji: '🧠' },
-  { id: 'pollinations', name: 'Pollinations', desc: 'Key gerektirmez. GPT, Mistral, LLaMA tabanlı.', emoji: '🌸' },
+  {
+    id: 'groq',
+    name: 'Groq',
+    desc: 'Ultra hızlı LPU çipler. LLaMA, Mixtral, DeepSeek.',
+    emoji: '⚡',
+  },
+  {
+    id: 'openrouter',
+    name: 'OpenRouter',
+    desc: 'Tek key ile 200+ model. 25+ ücretsiz model.',
+    emoji: '🔀',
+  },
+  {
+    id: 'gemini',
+    name: 'Google Gemini',
+    desc: 'Gemini 2.0 Flash, 2.5 Pro. 1M token context.',
+    emoji: '🔮',
+  },
+  {
+    id: 'anthropic',
+    name: 'Anthropic Claude',
+    desc: 'Claude Sonnet 4, Opus 4. Kod ve analizde üstün.',
+    emoji: '🧠',
+  },
+  {
+    id: 'pollinations',
+    name: 'Pollinations',
+    desc: 'Key gerektirmez. GPT, Mistral, LLaMA tabanlı.',
+    emoji: '🌸',
+  },
 ] as const;
 
 export const MODELS: Record<string, ModelInfo[]> = {
   groq: [
-    { id: 'llama-3.3-70b-versatile', name: 'LLaMA 3.3 70B · 280t/s', info: 'Meta en güçlü açık modeli. 131K ctx. Genel amaçlı.' },
-    { id: 'llama-3.1-8b-instant', name: 'LLaMA 3.1 8B · 560t/s ⚡', info: 'En hızlı Groq modeli. 131K ctx. Basit görevler.' },
-    { id: 'openai/gpt-oss-120b', name: 'GPT-OSS 120B · 500t/s ★', info: 'OpenAI açık ağırlıklı. 120B param. Web search + kod yürütme.' },
-    { id: 'openai/gpt-oss-20b', name: 'GPT-OSS 20B · 1000t/s ⚡', info: 'GPT-OSS serisi en hızlı. 1000 t/s! 131K ctx.' },
-    { id: 'meta-llama/llama-4-scout-17b-16e-instruct', name: 'LLaMA 4 Scout 17B · 750t/s', info: 'Meta LLaMA 4 ailesi. 16 uzman MoE. Çok hızlı.' },
-    { id: 'qwen/qwen3-32b', name: 'Qwen3 32B · 400t/s', info: 'Alibaba Qwen3. Güçlü mantık ve kod. 131K ctx.' },
-    { id: 'groq/compound', name: 'Groq Compound ★ Web+Kod', info: 'Web arama + kod yürütme dahil sistem. Otomatik araç seçimi.' },
-    { id: 'groq/compound-mini', name: 'Groq Compound Mini ⚡', info: 'Compound Mini — hızlı, araç destekli sistem.' },
-    { id: 'mixtral-8x7b-32768', name: 'Mixtral 8x7B', info: 'Mistral MoE. 32K ctx. Kod ve analiz.' },
+    {
+      id: 'llama-3.3-70b-versatile',
+      name: 'LLaMA 3.3 70B · 280t/s',
+      info: 'Meta en güçlü açık modeli. 131K ctx. Genel amaçlı.',
+    },
+    {
+      id: 'llama-3.1-8b-instant',
+      name: 'LLaMA 3.1 8B · 560t/s ⚡',
+      info: 'En hızlı Groq modeli. 131K ctx. Basit görevler.',
+    },
+    {
+      id: 'openai/gpt-oss-120b',
+      name: 'GPT-OSS 120B · 500t/s ★',
+      info: 'OpenAI açık ağırlıklı. 120B param. Web search + kod yürütme.',
+    },
+    {
+      id: 'openai/gpt-oss-20b',
+      name: 'GPT-OSS 20B · 1000t/s ⚡',
+      info: 'GPT-OSS serisi en hızlı. 1000 t/s! 131K ctx.',
+    },
+    {
+      id: 'meta-llama/llama-4-scout-17b-16e-instruct',
+      name: 'LLaMA 4 Scout 17B · 750t/s',
+      info: 'Meta LLaMA 4 ailesi. 16 uzman MoE. Çok hızlı.',
+    },
+    {
+      id: 'qwen/qwen3-32b',
+      name: 'Qwen3 32B · 400t/s',
+      info: 'Alibaba Qwen3. Güçlü mantık ve kod. 131K ctx.',
+    },
+    {
+      id: 'groq/compound',
+      name: 'Groq Compound ★ Web+Kod',
+      info: 'Web arama + kod yürütme dahil sistem. Otomatik araç seçimi.',
+    },
+    {
+      id: 'groq/compound-mini',
+      name: 'Groq Compound Mini ⚡',
+      info: 'Compound Mini — hızlı, araç destekli sistem.',
+    },
+    {
+      id: 'mixtral-8x7b-32768',
+      name: 'Mixtral 8x7B',
+      info: 'Mistral MoE. 32K ctx. Kod ve analiz.',
+    },
   ],
   openrouter: [
-    { id: 'openrouter/free', name: '🔀 Auto Free Router ★', info: 'OpenRouter ücretsiz modellerden otomatik seçer. Akıllı yönlendirme.' },
-    { id: 'deepseek/deepseek-v4-flash:free', name: '🆓 DeepSeek V4 Flash ★', info: '284B MoE, 13B aktif param. 1M ctx. Hızlı, akıl yürütme destekli.' },
-    { id: 'nvidia/llama-3.3-nemotron-super-49b-v1:free', name: '🆓 Nemotron Super 49B ★', info: 'NVIDIA. 1M ctx. Agentic görevler, kod, çok adımlı planlama.' },
-    { id: 'qwen/qwen3-coder-480b:free', name: '🆓 Qwen3 Coder 480B ★Kod', info: 'En güçlü ücretsiz kod modeli. Agentic coding.' },
-    { id: 'deepseek/deepseek-r1:free', name: '🆓 DeepSeek R1 ★Mantık', info: 'Güçlü chain-of-thought. Matematik ve analiz.' },
-    { id: 'meta-llama/llama-4-maverick:free', name: '🆓 LLaMA 4 Maverick ★1M ctx', info: '1 milyon token context! LLaMA 4 büyük model.' },
-    { id: 'qwen/qwen3-235b-a22b:free', name: '🆓 Qwen3 235B MoE ★Dev', info: '235B dev MoE. Çok güçlü.' },
-    { id: 'meta-llama/llama-3.3-70b-instruct:free', name: '🆓 LLaMA 3.3 70B', info: 'Genel amaçlı güçlü model.' },
-    { id: 'mistralai/mistral-small-3.2:free', name: '🆓 Mistral Small 3.2', info: 'Mistral güncel kompakt model.' },
+    {
+      id: 'openrouter/free',
+      name: '🔀 Auto Free Router ★',
+      info: 'OpenRouter ücretsiz modellerden otomatik seçer. Akıllı yönlendirme.',
+    },
+    {
+      id: 'deepseek/deepseek-v4-flash:free',
+      name: '🆓 DeepSeek V4 Flash ★',
+      info: '284B MoE, 13B aktif param. 1M ctx. Hızlı, akıl yürütme destekli.',
+    },
+    {
+      id: 'nvidia/llama-3.3-nemotron-super-49b-v1:free',
+      name: '🆓 Nemotron Super 49B ★',
+      info: 'NVIDIA. 1M ctx. Agentic görevler, kod, çok adımlı planlama.',
+    },
+    {
+      id: 'qwen/qwen3-coder-480b:free',
+      name: '🆓 Qwen3 Coder 480B ★Kod',
+      info: 'En güçlü ücretsiz kod modeli. Agentic coding.',
+    },
+    {
+      id: 'deepseek/deepseek-r1:free',
+      name: '🆓 DeepSeek R1 ★Mantık',
+      info: 'Güçlü chain-of-thought. Matematik ve analiz.',
+    },
+    {
+      id: 'meta-llama/llama-4-maverick:free',
+      name: '🆓 LLaMA 4 Maverick ★1M ctx',
+      info: '1 milyon token context! LLaMA 4 büyük model.',
+    },
+    {
+      id: 'qwen/qwen3-235b-a22b:free',
+      name: '🆓 Qwen3 235B MoE ★Dev',
+      info: '235B dev MoE. Çok güçlü.',
+    },
+    {
+      id: 'meta-llama/llama-3.3-70b-instruct:free',
+      name: '🆓 LLaMA 3.3 70B',
+      info: 'Genel amaçlı güçlü model.',
+    },
+    {
+      id: 'mistralai/mistral-small-3.2:free',
+      name: '🆓 Mistral Small 3.2',
+      info: 'Mistral güncel kompakt model.',
+    },
     { id: 'google/gemma-3-27b-it:free', name: '🆓 Gemma 3 27B', info: 'Google büyük açık modeli.' },
-    { id: 'nvidia/llama-3.3-nemotron-super:free', name: '🆓 Nemotron Super 49B', info: 'NVIDIA fine-tune. Agentic.' },
-    { id: 'microsoft/phi-4-reasoning-plus:free', name: '🆓 Phi-4 Reasoning Plus', info: 'Microsoft mantık modeli. Gelişmiş akıl yürütme.' },
-    { id: 'anthropic/claude-sonnet-4-5', name: '💳 Claude Sonnet 4.5', info: 'Anthropic en güncel. Üstün analiz.' },
+    {
+      id: 'nvidia/llama-3.3-nemotron-super:free',
+      name: '🆓 Nemotron Super 49B',
+      info: 'NVIDIA fine-tune. Agentic.',
+    },
+    {
+      id: 'microsoft/phi-4-reasoning-plus:free',
+      name: '🆓 Phi-4 Reasoning Plus',
+      info: 'Microsoft mantık modeli. Gelişmiş akıl yürütme.',
+    },
+    {
+      id: 'anthropic/claude-sonnet-4-5',
+      name: '💳 Claude Sonnet 4.5',
+      info: 'Anthropic en güncel. Üstün analiz.',
+    },
     { id: 'openai/gpt-4o', name: '💳 GPT-4o', info: 'OpenAI multimodal.' },
     { id: 'openai/o3', name: '💳 OpenAI o3 ★', info: 'OpenAI en güçlü reasoning modeli.' },
-    { id: 'google/gemini-2.5-pro-preview', name: '💳 Gemini 2.5 Pro', info: 'Google en güncel pro.' },
+    {
+      id: 'google/gemini-2.5-pro-preview',
+      name: '💳 Gemini 2.5 Pro',
+      info: 'Google en güncel pro.',
+    },
   ],
   gemini: [
-    { id: 'gemini-2.5-flash-preview-05-20', name: 'Gemini 2.5 Flash ★Yeni ⚡', info: 'En güncel Flash. Hızlı + düşünme modu. Günlük kullanım.' },
-    { id: 'gemini-2.5-pro-preview-05-06', name: 'Gemini 2.5 Pro ★En Güçlü', info: 'Google en güçlü modeli. Derin analiz.' },
+    {
+      id: 'gemini-2.5-flash-preview-05-20',
+      name: 'Gemini 2.5 Flash ★Yeni ⚡',
+      info: 'En güncel Flash. Hızlı + düşünme modu. Günlük kullanım.',
+    },
+    {
+      id: 'gemini-2.5-pro-preview-05-06',
+      name: 'Gemini 2.5 Pro ★En Güçlü',
+      info: 'Google en güçlü modeli. Derin analiz.',
+    },
     { id: 'gemini-2.0-flash', name: 'Gemini 2.0 Flash', info: 'Hızlı, kararlı. 1M ctx.' },
-    { id: 'gemini-2.0-flash-lite', name: 'Gemini 2.0 Flash Lite ⚡', info: 'En ekonomik Gemini. Basit görevler.' },
+    {
+      id: 'gemini-2.0-flash-lite',
+      name: 'Gemini 2.0 Flash Lite ⚡',
+      info: 'En ekonomik Gemini. Basit görevler.',
+    },
     { id: 'gemini-1.5-pro', name: 'Gemini 1.5 Pro', info: '1M token context. Uzun belgeler.' },
     { id: 'gemini-1.5-flash', name: 'Gemini 1.5 Flash', info: 'Hızlı ve ekonomik.' },
   ],
   anthropic: [
-    { id: 'claude-sonnet-4-20250514', name: 'Claude Sonnet 4 ★', info: 'En güncel Claude. Dengeli güç ve hız.' },
-    { id: 'claude-opus-4-20250514', name: 'Claude Opus 4 ★En Güçlü', info: 'En güçlü Claude. Derin analiz ve kodlama.' },
-    { id: 'claude-haiku-4-5-20251001', name: 'Claude Haiku 4.5 ⚡', info: 'En hızlı Claude. Düşük maliyet.' },
-    { id: 'claude-3-5-sonnet-20241022', name: 'Claude 3.5 Sonnet', info: 'Önceki nesil Sonnet. Kararlı.' },
+    {
+      id: 'claude-sonnet-4-20250514',
+      name: 'Claude Sonnet 4 ★',
+      info: 'En güncel Claude. Dengeli güç ve hız.',
+    },
+    {
+      id: 'claude-opus-4-20250514',
+      name: 'Claude Opus 4 ★En Güçlü',
+      info: 'En güçlü Claude. Derin analiz ve kodlama.',
+    },
+    {
+      id: 'claude-haiku-4-5-20251001',
+      name: 'Claude Haiku 4.5 ⚡',
+      info: 'En hızlı Claude. Düşük maliyet.',
+    },
+    {
+      id: 'claude-3-5-sonnet-20241022',
+      name: 'Claude 3.5 Sonnet',
+      info: 'Önceki nesil Sonnet. Kararlı.',
+    },
   ],
   pollinations: [
-    { id: 'openai', name: 'Pollinations OpenAI', info: 'Key gerektirmez. GPT tabanlı. Hızlı ve güvenilir.' },
-    { id: 'mistral', name: 'Pollinations Mistral', info: 'Key gerektirmez. Mistral tabanlı. Dengeli.' },
-    { id: 'llama', name: 'Pollinations LLaMA', info: 'Key gerektirmez. LLaMA tabanlı. Açık kaynak.' },
+    {
+      id: 'openai',
+      name: 'Pollinations OpenAI',
+      info: 'Key gerektirmez. GPT tabanlı. Hızlı ve güvenilir.',
+    },
+    {
+      id: 'mistral',
+      name: 'Pollinations Mistral',
+      info: 'Key gerektirmez. Mistral tabanlı. Dengeli.',
+    },
+    {
+      id: 'llama',
+      name: 'Pollinations LLaMA',
+      info: 'Key gerektirmez. LLaMA tabanlı. Açık kaynak.',
+    },
   ],
 };
 
@@ -100,16 +253,16 @@ export const PREMIUM_MODELS = [
 
 export const PREMIUM_INFO: Record<string, string> = {
   'openai/gpt-4o-mini': 'GPT-4o Mini — Hızlı ve yetenekli ücretsiz model. 128K ctx.',
-  'google/gemini-2.5-flash': 'Gemini 2.5 Flash — Google\'ın en yeni hızlı modeli. Düşünme modu.',
-  'anthropic/claude-3-haiku': 'Claude 3 Haiku — Anthropic\'in en hızlı modeli. 200K ctx.',
-  'meta-llama/llama-4-maverick': 'LLaMA 4 Maverick — 1M context! Meta\'nın dev modeli.',
+  'google/gemini-2.5-flash': "Gemini 2.5 Flash — Google'ın en yeni hızlı modeli. Düşünme modu.",
+  'anthropic/claude-3-haiku': "Claude 3 Haiku — Anthropic'in en hızlı modeli. 200K ctx.",
+  'meta-llama/llama-4-maverick': "LLaMA 4 Maverick — 1M context! Meta'nın dev modeli.",
   'deepseek/deepseek-v3': 'DeepSeek V3 — 671B MoE. Kod ve analizde çok güçlü.',
   'nvidia/llama-3.3-nemotron-super': 'Nemotron Super 49B — NVIDIA fine-tune. Agentic.',
-  'qwen/qwen3-235b-a22b': 'Qwen3 235B MoE — Alibaba\'nın dev modeli. Çok yetenekli.',
+  'qwen/qwen3-235b-a22b': "Qwen3 235B MoE — Alibaba'nın dev modeli. Çok yetenekli.",
   'microsoft/phi-4-reasoning-plus': 'Phi-4 Reasoning+ — Microsoft mantık modeli.',
   'mistralai/mistral-small-3.2': 'Mistral Small 3.2 — Güncel kompakt model.',
   'google/gemma-3-27b': 'Gemma 3 27B — Google açık model. Dengeli.',
-  'meta-llama/llama-3.3-70b': 'LLaMA 3.3 70B — Meta\'nın güçlü genel modeli.',
+  'meta-llama/llama-3.3-70b': "LLaMA 3.3 70B — Meta'nın güçlü genel modeli.",
   'qwen/qwen3-32b': 'Qwen3 32B — Orta boy, çok yetenekli.',
   'deepseek/deepseek-r1': 'DeepSeek R1 — Chain-of-thought. Matematik harikası.',
   'arcee-ai/trinity-large': 'Trinity Large — Frontier kalite açık model.',
@@ -372,7 +525,8 @@ export const INTENT_LABELS: Record<string, string> = {
 };
 
 export const DEFAULT_SYSTEM_PROMPT = 'Sen yardımcı bir AI asistansın. Türkçe cevap ver.';
-export const DEFAULT_PREMIUM_SYSTEM = 'Sen premium bir AI asistansın. Detaylı ve kaliteli Türkçe cevaplar ver.';
+export const DEFAULT_PREMIUM_SYSTEM =
+  'Sen premium bir AI asistansın. Detaylı ve kaliteli Türkçe cevaplar ver.';
 
 export const STORAGE_KEYS = {
   THEME: 'aihub_theme',

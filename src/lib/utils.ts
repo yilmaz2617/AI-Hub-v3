@@ -1,8 +1,8 @@
 // ═══════════════════════════════════════════
 // AI HUB v3 — Yardımcı Fonksiyonlar
 // ═══════════════════════════════════════════
-import { type ClassValue, clsx } from "clsx";
-import { twMerge } from "tailwind-merge";
+import { type ClassValue, clsx } from 'clsx';
+import { twMerge } from 'tailwind-merge';
 import hljs from 'highlight.js';
 import 'highlight.js/styles/github-dark.css';
 
@@ -12,11 +12,19 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 // ─── ID Üretici ───
-export const uid = () => Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+export const uid = () =>
+  Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 
 // ─── Zaman Formatlayıcı ───
-export const fmtTime = (ts: number) => new Date(ts).toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' });
-export const fmtDate = (ts: number) => new Date(ts).toLocaleDateString('tr-TR', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
+export const fmtTime = (ts: number) =>
+  new Date(ts).toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' });
+export const fmtDate = (ts: number) =>
+  new Date(ts).toLocaleDateString('tr-TR', {
+    day: 'numeric',
+    month: 'short',
+    hour: '2-digit',
+    minute: '2-digit',
+  });
 
 // ─── Markdown Render (Güvenli) ───
 import { marked } from 'marked';
@@ -28,26 +36,60 @@ export function renderMarkdown(text: string): string {
     gfm: true,
   }) as string;
   // Sonrasında highlight.js ile kod bloklarını işle
-  const highlighted = raw.replace(/<pre><code class="language-(\w+)">([\s\S]*?)<\/code><\/pre>/g, (_match, lang, code) => {
-    try {
-      const decoded = code.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&');
-      const highlighted = lang && hljs.getLanguage(lang)
-        ? hljs.highlight(decoded, { language: lang }).value
-        : hljs.highlightAuto(decoded).value;
-      return `<pre class="md-pre"><code class="hljs language-${lang}">${highlighted}</code></pre>`;
-    } catch {
-      return `<pre class="md-pre"><code class="hljs language-${lang}">${code}</code></pre>`;
+  const highlighted = raw.replace(
+    /<pre><code class="language-(\w+)">([\s\S]*?)<\/code><\/pre>/g,
+    (_match, lang, code) => {
+      try {
+        const decoded = code.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&');
+        const highlighted =
+          lang && hljs.getLanguage(lang)
+            ? hljs.highlight(decoded, { language: lang }).value
+            : hljs.highlightAuto(decoded).value;
+        return `<pre class="md-pre"><code class="hljs language-${lang}">${highlighted}</code></pre>`;
+      } catch {
+        return `<pre class="md-pre"><code class="hljs language-${lang}">${code}</code></pre>`;
+      }
     }
-  });
+  );
   // XSS koruması
   return sanitizeHtml(highlighted);
 }
 
 const allowedTags = new Set([
-  'p', 'br', 'strong', 'b', 'em', 'i', 'u', 's', 'del', 'a', 'code', 'pre',
-  'blockquote', 'ul', 'ol', 'li', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
-  'table', 'thead', 'tbody', 'tr', 'th', 'td', 'hr', 'span', 'div',
-  'img', 'sup', 'sub',
+  'p',
+  'br',
+  'strong',
+  'b',
+  'em',
+  'i',
+  'u',
+  's',
+  'del',
+  'a',
+  'code',
+  'pre',
+  'blockquote',
+  'ul',
+  'ol',
+  'li',
+  'h1',
+  'h2',
+  'h3',
+  'h4',
+  'h5',
+  'h6',
+  'table',
+  'thead',
+  'tbody',
+  'tr',
+  'th',
+  'td',
+  'hr',
+  'span',
+  'div',
+  'img',
+  'sup',
+  'sub',
 ]);
 
 const allowedAttrs: Record<string, Set<string>> = {

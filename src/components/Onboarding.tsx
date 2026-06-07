@@ -2,21 +2,28 @@ import { useState } from 'react';
 import { useUIStore } from '@/store/uiStore';
 import { motion } from 'framer-motion';
 import {
-  MessageSquare, Crown, Image, Zap, Keyboard,
-  ArrowRight, ArrowLeft, Sparkles, Check
+  MessageSquare,
+  Crown,
+  Image,
+  Zap,
+  Keyboard,
+  ArrowRight,
+  ArrowLeft,
+  Sparkles,
+  Check,
 } from 'lucide-react';
 
 const STEPS = [
   {
     icon: Sparkles,
-    title: 'AI Hub\'a Hos Geldin!',
+    title: "AI Hub'a Hos Geldin!",
     desc: '5 farkli AI saglayici, 50+ hazir prompt, gorsel uretimi ve kendi kendini gelistiren bir AI paneli.',
     color: 'var(--accent)',
   },
   {
     icon: MessageSquare,
     title: 'Sohbet Et',
-    desc: 'Groq, OpenRouter, Google Gemini, Anthropic Claude ve Pollinations ile sohbet et. API key\'lerini API Durumu panelinden ekle.',
+    desc: "Groq, OpenRouter, Google Gemini, Anthropic Claude ve Pollinations ile sohbet et. API key'lerini API Durumu panelinden ekle.",
     color: 'var(--green)',
   },
   {
@@ -28,7 +35,7 @@ const STEPS = [
   {
     icon: Image,
     title: 'Gorsel Uret',
-    desc: 'Flux, SDXL modelleriyle AI gorselleri olustur. Prompt\'unu cevir, guclendir, varyantlar uret.',
+    desc: "Flux, SDXL modelleriyle AI gorselleri olustur. Prompt'unu cevir, guclendir, varyantlar uret.",
     color: 'var(--purple)',
   },
   {
@@ -56,7 +63,10 @@ export default function Onboarding() {
 
   return (
     <div className="fixed inset-0 z-[300] flex items-center justify-center p-4">
-      <div className="absolute inset-0 bg-black/60 backdrop-blur-md" onClick={() => setOnboarding(false)} />
+      <div
+        className="absolute inset-0 bg-black/60 backdrop-blur-md"
+        onClick={() => setOnboarding(false)}
+      />
       <motion.div
         initial={{ opacity: 0, scale: 0.9, y: 30 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -99,13 +109,20 @@ export default function Onboarding() {
             >
               <Icon size={28} style={{ color: current.color }} />
             </div>
-            <h2 className="text-xl font-bold mb-2" style={{ color: 'var(--text)' }}>{current.title}</h2>
-            <p className="text-sm leading-relaxed" style={{ color: 'var(--text2)' }}>{current.desc}</p>
+            <h2 className="text-xl font-bold mb-2" style={{ color: 'var(--text)' }}>
+              {current.title}
+            </h2>
+            <p className="text-sm leading-relaxed" style={{ color: 'var(--text2)' }}>
+              {current.desc}
+            </p>
           </motion.div>
         </div>
 
         {/* Navigation */}
-        <div className="flex items-center justify-between px-6 py-4" style={{ borderTop: '1px solid var(--border)', background: 'var(--surface2)' }}>
+        <div
+          className="flex items-center justify-between px-6 py-4"
+          style={{ borderTop: '1px solid var(--border)', background: 'var(--surface2)' }}
+        >
           <button
             onClick={() => setOnboarding(false)}
             className="text-xs transition-colors"
@@ -118,7 +135,11 @@ export default function Onboarding() {
               <button
                 onClick={() => setStep(s => s - 1)}
                 className="flex items-center gap-1 px-3 py-2 rounded-lg text-xs transition-all"
-                style={{ background: 'var(--surface3)', border: '1px solid var(--border)', color: 'var(--text2)' }}
+                style={{
+                  background: 'var(--surface3)',
+                  border: '1px solid var(--border)',
+                  color: 'var(--text2)',
+                }}
               >
                 <ArrowLeft size={12} /> Geri
               </button>

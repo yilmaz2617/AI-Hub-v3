@@ -35,7 +35,7 @@ export interface WebBridgeState {
   clearHistory: () => void;
 }
 
-export const useWebBridgeStore = create<WebBridgeState>((set) => ({
+export const useWebBridgeStore = create<WebBridgeState>(set => ({
   status: 'disconnected',
   serverUrl: 'ws://127.0.0.1:10086/ws',
   lastError: null,
@@ -43,13 +43,14 @@ export const useWebBridgeStore = create<WebBridgeState>((set) => ({
   lastResult: null,
   isExtensionInstalled: false,
 
-  setStatus: (status) => set({ status }),
-  setServerUrl: (serverUrl) => set({ serverUrl }),
-  setError: (lastError) => set({ lastError }),
-  addToolCall: (call) => set((state) => ({ 
-    toolHistory: [call, ...state.toolHistory].slice(0, 100) 
-  })),
-  setLastResult: (lastResult) => set({ lastResult }),
-  setExtensionInstalled: (isExtensionInstalled) => set({ isExtensionInstalled }),
+  setStatus: status => set({ status }),
+  setServerUrl: serverUrl => set({ serverUrl }),
+  setError: lastError => set({ lastError }),
+  addToolCall: call =>
+    set(state => ({
+      toolHistory: [call, ...state.toolHistory].slice(0, 100),
+    })),
+  setLastResult: lastResult => set({ lastResult }),
+  setExtensionInstalled: isExtensionInstalled => set({ isExtensionInstalled }),
   clearHistory: () => set({ toolHistory: [], lastResult: null }),
 }));

@@ -41,18 +41,22 @@ export async function callAPI(
   history: Message[],
   system?: string,
   signal?: AbortSignal,
-  onStream?: (chunk: string) => void,
+  onStream?: (chunk: string) => void
 ): Promise<string> {
   const systemMsg = system || 'Sen yardımcı bir AI asistansın.';
-  const messages = history.map(m => ({ role: m.role === 'assistant' ? 'assistant' : 'user', content: m.content }));
+  const messages = history.map(m => ({
+    role: m.role === 'assistant' ? 'assistant' : 'user',
+    content: m.content,
+  }));
 
   if (provider === 'groq' || provider === 'openrouter') {
-    const url = provider === 'groq'
-      ? 'https://api.groq.com/openai/v1/chat/completions'
-      : 'https://openrouter.ai/api/v1/chat/completions';
+    const url =
+      provider === 'groq'
+        ? 'https://api.groq.com/openai/v1/chat/completions'
+        : 'https://openrouter.ai/api/v1/chat/completions';
     const headers: Record<string, string> = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ' + key,
+      Authorization: 'Bearer ' + key,
     };
     if (provider === 'openrouter') {
       headers['HTTP-Referer'] = 'https://aihub.local';
@@ -90,8 +94,13 @@ export async function callAPI(
             try {
               const json = JSON.parse(trimmed.slice(6));
               const delta = json.choices?.[0]?.delta?.content || '';
-              if (delta) { full += delta; onStream(delta); }
-            } catch { /* ignore parse errors */ }
+              if (delta) {
+                full += delta;
+                onStream(delta);
+              }
+            } catch {
+              /* ignore parse errors */
+            }
           }
         }
       }
@@ -157,7 +166,7 @@ export async function callPremiumAPI(
   system: string,
   hasKey: boolean,
   key: string,
-  signal?: AbortSignal,
+  signal?: AbortSignal
 ): Promise<string> {
   const url = 'https://openrouter.ai/api/v1/chat/completions';
   const headers: Record<string, string> = {
@@ -170,7 +179,10 @@ export async function callPremiumAPI(
   } else {
     throw new Error('OpenRouter API key bulunamadı. Ayarlar panelinden ekleyin.');
   }
-  const messages = history.map(m => ({ role: m.role === 'assistant' ? 'assistant' : 'user', content: m.content }));
+  const messages = history.map(m => ({
+    role: m.role === 'assistant' ? 'assistant' : 'user',
+    content: m.content,
+  }));
   const res = await fetch(url, {
     method: 'POST',
     headers,
@@ -199,7 +211,7 @@ export function generateImageUrl(
   seed: number,
   width: number,
   height: number,
-  negative?: string,
+  negative?: string
 ): string {
   const params = new URLSearchParams({
     model,

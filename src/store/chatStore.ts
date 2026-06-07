@@ -34,14 +34,17 @@ const now = () => Date.now();
 const createDefaultSession = (): ChatSession => ({
   id: generateId(),
   title: 'Yeni Sohbet',
-  messages: [{
-    id: generateId(),
-    role: 'assistant',
-    content: 'Merhaba! AI Hub\'a hoş geldin. Groq, OpenRouter, Gemini, Claude ve Pollinations ile sohbet edebilirsin. API Durumu sekmesinden key\'lerini ekle veya Pollinations\'ı key\'siz dene!',
-    timestamp: now(),
-    provider: 'pollinations',
-    model: 'openai',
-  }],
+  messages: [
+    {
+      id: generateId(),
+      role: 'assistant',
+      content:
+        "Merhaba! AI Hub'a hoş geldin. Groq, OpenRouter, Gemini, Claude ve Pollinations ile sohbet edebilirsin. API Durumu sekmesinden key'lerini ekle veya Pollinations'ı key'siz dene!",
+      timestamp: now(),
+      provider: 'pollinations',
+      model: 'openai',
+    },
+  ],
   provider: 'groq',
   model: 'llama-3.3-70b-versatile',
   systemPrompt: DEFAULT_SYSTEM_PROMPT,
@@ -60,8 +63,8 @@ export const useChatStore = create<ChatState>((set, get) => ({
   setProvider: (p, model) => {
     set({ provider: p, model: model || get().model });
   },
-  setModel: (m) => set({ model: m }),
-  setSystemPrompt: (p) => set({ systemPrompt: p }),
+  setModel: m => set({ model: m }),
+  setSystemPrompt: p => set({ systemPrompt: p }),
 
   createSession: () => {
     const session = createDefaultSession();
@@ -76,7 +79,7 @@ export const useChatStore = create<ChatState>((set, get) => ({
     return session.id;
   },
 
-  deleteSession: (id) => {
+  deleteSession: id => {
     set(s => {
       const filtered = s.sessions.filter(se => se.id !== id);
       let activeId = s.activeSessionId;
@@ -88,7 +91,7 @@ export const useChatStore = create<ChatState>((set, get) => ({
     get().saveSessions();
   },
 
-  setActiveSession: (id) => {
+  setActiveSession: id => {
     const session = get().sessions.find(s => s.id === id);
     if (session) {
       set({
@@ -131,18 +134,20 @@ export const useChatStore = create<ChatState>((set, get) => ({
     get().saveSessions();
   },
 
-  clearSession: (id) => {
+  clearSession: id => {
     set(s => {
       const updated = s.sessions.map(se => {
         if (se.id !== id) return se;
         return {
           ...se,
-          messages: [{
-            id: generateId(),
-            role: 'assistant' as const,
-            content: 'Sohbet temizlendi.',
-            timestamp: now(),
-          }],
+          messages: [
+            {
+              id: generateId(),
+              role: 'assistant' as const,
+              content: 'Sohbet temizlendi.',
+              timestamp: now(),
+            },
+          ],
           updatedAt: now(),
         };
       });
@@ -156,14 +161,16 @@ export const useChatStore = create<ChatState>((set, get) => ({
     return sessions.find(s => s.id === activeSessionId) || null;
   },
 
-  setIsStreaming: (v) => set({ isStreaming: v }),
+  setIsStreaming: v => set({ isStreaming: v }),
 
   saveSessions: () => {
     try {
       const { sessions } = get();
       const trimmed = sessions.slice(-20); // Keep last 20
       localStorage.setItem(STORAGE_KEYS.CHAT_SESSIONS, JSON.stringify(trimmed));
-    } catch { /* ignore */ }
+    } catch {
+      /* ignore */
+    }
   },
 
   loadSessions: () => {
@@ -171,7 +178,10 @@ export const useChatStore = create<ChatState>((set, get) => ({
       const stored = localStorage.getItem(STORAGE_KEYS.CHAT_SESSIONS);
       if (stored) {
         const sessions: ChatSession[] = JSON.parse(stored);
-        set({ sessions, activeSessionId: sessions.length > 0 ? sessions[sessions.length - 1].id : null });
+        set({
+          sessions,
+          activeSessionId: sessions.length > 0 ? sessions[sessions.length - 1].id : null,
+        });
       } else {
         // Create default session
         const session = createDefaultSession();

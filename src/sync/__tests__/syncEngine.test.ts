@@ -8,7 +8,7 @@ describe('syncEngine', () => {
 
   it('should allow subscription', () => {
     const received: unknown[] = [];
-    const unsub = syncEngine.subscribe((msg) => received.push(msg));
+    const unsub = syncEngine.subscribe(msg => received.push(msg));
     expect(typeof unsub).toBe('function');
     unsub();
   });

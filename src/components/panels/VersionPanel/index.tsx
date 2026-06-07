@@ -27,7 +27,7 @@ export const VersionPanel: React.FC = () => {
         changes: ['Initial v3 release', 'React 19 + TypeScript', 'Tailwind CSS'],
       },
     ];
-    
+
     setVersions(mockVersions);
     setLoading(false);
   }, []);
@@ -45,6 +45,3 @@ export const VersionPanel: React.FC = () => {
 };
 
 export default VersionPanel;
-
-
-

@@ -58,4 +58,3 @@ export function useSync() {
     deviceId: syncEngine.getDeviceId(),
   };
 }
-

@@ -31,11 +31,15 @@ export default function ThemeSwitcher() {
             {THEMES.map(theme => (
               <button
                 key={theme.id}
-                onClick={() => { setTheme(theme.id as ThemeId); setOpen(false); }}
+                onClick={() => {
+                  setTheme(theme.id as ThemeId);
+                  setOpen(false);
+                }}
                 className="w-full text-left px-3 py-2 text-sm transition-colors hover:bg-[var(--surface2)] flex items-center gap-2"
                 style={{
                   color: themeId === theme.id ? 'var(--accent)' : 'var(--text2)',
-                  borderLeft: themeId === theme.id ? '3px solid var(--accent)' : '3px solid transparent',
+                  borderLeft:
+                    themeId === theme.id ? '3px solid var(--accent)' : '3px solid transparent',
                 }}
               >
                 {theme.name}

@@ -5,9 +5,17 @@ import { INTENT_LABELS } from '@/lib/constants';
 import { uid, downloadFile } from '@/lib/utils';
 import type { Suggestion, ImprovementBackup, IntentId } from '@/types';
 import {
-  Zap, Sparkles, CheckCircle, X,
-  RotateCcw, Download, History, Loader2,
-  Shield, Eye, Play
+  Zap,
+  Sparkles,
+  CheckCircle,
+  X,
+  RotateCcw,
+  Download,
+  History,
+  Loader2,
+  Shield,
+  Eye,
+  Play,
 } from 'lucide-react';
 
 const INTENTS: { id: IntentId; label: string; icon: typeof Zap }[] = [
@@ -36,12 +44,12 @@ export default function ImprovePanel() {
   const clearLog = () => setLog([]);
 
   const getAIProvider = () => {
-  const state = useAppStore.getState();
-  if (state.apiKeys.groq || state.apiKeys.gemini) {
-    return { type: 'free' as const, keys: state.apiKeys };
-  }
-  return null;
-};
+    const state = useAppStore.getState();
+    if (state.apiKeys.groq || state.apiKeys.gemini) {
+      return { type: 'free' as const, keys: state.apiKeys };
+    }
+    return null;
+  };
 
   const handleGetSuggestions = async () => {
     const pk = getAIProvider();
@@ -53,9 +61,19 @@ export default function ImprovePanel() {
     clearLog();
     addLog('info', 'Hub analiz ediliyor...');
 
-    const history = (() => { try { return JSON.parse(localStorage.getItem('aihub_improve_history') || '[]'); } catch { return []; } })();
+    const history = (() => {
+      try {
+        return JSON.parse(localStorage.getItem('aihub_improve_history') || '[]');
+      } catch {
+        return [];
+      }
+    })();
     const histCtx = history.length
-      ? 'Daha önce uygulananlar (bunları tekrar önerme):\n' + history.slice(-5).map((h: unknown) => `- ${h.title}: ${h.detail}`).join('\n')
+      ? 'Daha önce uygulananlar (bunları tekrar önerme):\n' +
+        history
+          .slice(-5)
+          .map((h: unknown) => `- ${h.title}: ${h.detail}`)
+          .join('\n')
       : 'Henüz değişiklik uygulanmadı.';
 
     const prompt = `AI Hub uygulamasını analiz et. Kullanıcının seçtiği hedef: "${INTENT_LABELS[intent]}".
@@ -93,10 +111,34 @@ Uygulama özeti:
         // Fallback suggestions
         parsed = {
           suggestions: [
-            { icon: '💾', title: 'Sohbet Yedekleme', detail: 'Sohbetler otomatik olarak localStorage\'a kaydedilir ve dışa aktarılabilir.', category: 'Özellik', inject: '// Auto-save chat to localStorage' },
-            { icon: '⌨️', title: 'Klavye Kısayolları', detail: 'Ctrl+1-5 panel geçişi, Ctrl+Enter gönder, Escape iptal.', category: 'UI', inject: '// Keyboard shortcuts listener' },
-            { icon: '🔔', title: 'Bildirim Sistemi', detail: 'AI yanıtı geldiğinde sesli ve görsel bildirim.', category: 'UI', inject: '// Toast notification with sound' },
-            { icon: '🎨', title: 'Tema Animasyonları', detail: 'Tema değişiminde yumuşak geçiş animasyonları.', category: 'UI', inject: '// Theme transition animations' },
+            {
+              icon: '💾',
+              title: 'Sohbet Yedekleme',
+              detail: "Sohbetler otomatik olarak localStorage'a kaydedilir ve dışa aktarılabilir.",
+              category: 'Özellik',
+              inject: '// Auto-save chat to localStorage',
+            },
+            {
+              icon: '⌨️',
+              title: 'Klavye Kısayolları',
+              detail: 'Ctrl+1-5 panel geçişi, Ctrl+Enter gönder, Escape iptal.',
+              category: 'UI',
+              inject: '// Keyboard shortcuts listener',
+            },
+            {
+              icon: '🔔',
+              title: 'Bildirim Sistemi',
+              detail: 'AI yanıtı geldiğinde sesli ve görsel bildirim.',
+              category: 'UI',
+              inject: '// Toast notification with sound',
+            },
+            {
+              icon: '🎨',
+              title: 'Tema Animasyonları',
+              detail: 'Tema değişiminde yumuşak geçiş animasyonları.',
+              category: 'UI',
+              inject: '// Theme transition animations',
+            },
           ],
         };
       }
@@ -113,7 +155,8 @@ Uygulama özeti:
     const s = suggestions[idx];
     if (!s) return;
     const pk = getAIProvider();
-    if (!pk && !confirm('API key yok. Pollinations ile devam edilsin mi? (Daha az güvenilir)')) return;
+    if (!pk && !confirm('API key yok. Pollinations ile devam edilsin mi? (Daha az güvenilir)'))
+      return;
 
     setApplyingIdx(idx);
     addLog('info', `Diff üretiliyor: ${s.title}`);
@@ -185,7 +228,10 @@ GELİŞTİRME KONUSU: ${s.category}
         const tmp = document.createElement('div');
         tmp.innerHTML = diff.html.replace(/\\n/g, '\n');
         tmp.setAttribute('data-aihub-diff', s.title);
-        document.body.insertBefore(tmp, document.querySelector('.toast-container') || document.body.lastChild);
+        document.body.insertBefore(
+          tmp,
+          document.querySelector('.toast-container') || document.body.lastChild
+        );
         addLog('ok', 'HTML inject edildi');
       }
       if (diff.js && diff.js.trim()) {
@@ -201,7 +247,9 @@ GELİŞTİRME KONUSU: ${s.category}
         const h = JSON.parse(localStorage.getItem('aihub_improve_history') || '[]');
         h.push({ title: s.title, detail: s.detail, date: new Date().toLocaleString('tr-TR') });
         localStorage.setItem('aihub_improve_history', JSON.stringify(h.slice(-20)));
-      } catch { /* ignore */ }
+      } catch {
+        /* ignore */
+      }
 
       // Download updated HTML
       const blobHtml = document.documentElement.outerHTML;
@@ -211,7 +259,9 @@ GELİŞTİRME KONUSU: ${s.category}
       addToast('✓ ' + s.title + ' uygulandı!', 'success');
 
       // Update suggestion
-      setSuggestions(prev => prev.map((su, i) => i === idx ? { ...su, detail: '✅ Uygulandı! Yedek alındı.' } : su));
+      setSuggestions(prev =>
+        prev.map((su, i) => (i === idx ? { ...su, detail: '✅ Uygulandı! Yedek alındı.' } : su))
+      );
     } catch (e: unknown) {
       addLog('err', (e as Error).message);
       addToast('Hata: ' + (e as Error).message, 'error');
@@ -221,8 +271,12 @@ GELİŞTİRME KONUSU: ${s.category}
 
   const handleRestore = (backupId: string) => {
     const backup = backups.find(b => b.id === backupId);
-    if (!backup) { addToast('Yedek bulunamadı!', 'error'); return; }
-    if (!confirm('Bu yedeğe dönmek istediğinize emin misiniz? Mevcut değişiklikler kaybolacak.')) return;
+    if (!backup) {
+      addToast('Yedek bulunamadı!', 'error');
+      return;
+    }
+    if (!confirm('Bu yedeğe dönmek istediğinize emin misiniz? Mevcut değişiklikler kaybolacak.'))
+      return;
 
     try {
       // Remove injected diffs
@@ -244,10 +298,15 @@ GELİŞTİRME KONUSU: ${s.category}
   return (
     <div className="flex flex-col h-full overflow-hidden">
       {/* Header */}
-      <div className="flex items-center justify-between px-4 py-2.5 flex-shrink-0" style={{ borderBottom: '1px solid var(--border)' }}>
+      <div
+        className="flex items-center justify-between px-4 py-2.5 flex-shrink-0"
+        style={{ borderBottom: '1px solid var(--border)' }}
+      >
         <div className="flex items-center gap-2">
           <Zap size={16} style={{ color: 'var(--yellow)' }} />
-          <span className="font-semibold text-sm" style={{ color: 'var(--text)' }}>Kendini Geliştir</span>
+          <span className="font-semibold text-sm" style={{ color: 'var(--text)' }}>
+            Kendini Geliştir
+          </span>
         </div>
         <div className="flex items-center gap-2">
           <button
@@ -270,12 +329,16 @@ GELİŞTİRME KONUSU: ${s.category}
       <div className="flex-1 overflow-y-auto p-4 space-y-4" style={{ scrollbarWidth: 'thin' }}>
         {/* Description */}
         <div className="text-sm leading-relaxed" style={{ color: 'var(--text2)' }}>
-          AI Hub, kendi kodunu analiz eder ve seçtiğin hedefe göre öneri üretir. Her değişiklik öncesi otomatik yedek alınır, dilediğinde geri dönebilirsin.
+          AI Hub, kendi kodunu analiz eder ve seçtiğin hedefe göre öneri üretir. Her değişiklik
+          öncesi otomatik yedek alınır, dilediğinde geri dönebilirsin.
         </div>
 
         {/* Intent Selection */}
         <div>
-          <label className="text-[10px] uppercase tracking-wider font-semibold block mb-2" style={{ color: 'var(--text3)' }}>
+          <label
+            className="text-[10px] uppercase tracking-wider font-semibold block mb-2"
+            style={{ color: 'var(--text3)' }}
+          >
             Geliştirme Hedefi
           </label>
           <div className="flex flex-wrap gap-2">
@@ -304,12 +367,33 @@ GELİŞTİRME KONUSU: ${s.category}
         {/* History badge */}
         <div
           className="flex items-center gap-2 px-3 py-2 rounded-lg text-[11px]"
-          style={{ background: 'var(--surface2)', border: '1px solid var(--border)', color: 'var(--text2)' }}
+          style={{
+            background: 'var(--surface2)',
+            border: '1px solid var(--border)',
+            color: 'var(--text2)',
+          }}
         >
           <History size={12} />
-          <span>Geçmiş: <span style={{ color: 'var(--green)' }}>{(() => { try { return JSON.parse(localStorage.getItem('aihub_improve_history') || '[]').length; } catch { return 0; } })()} değişiklik</span></span>
+          <span>
+            Geçmiş:{' '}
+            <span style={{ color: 'var(--green)' }}>
+              {(() => {
+                try {
+                  return JSON.parse(localStorage.getItem('aihub_improve_history') || '[]').length;
+                } catch {
+                  return 0;
+                }
+              })()}{' '}
+              değişiklik
+            </span>
+          </span>
           <button
-            onClick={() => { if (confirm('Geçmiş silinsin mi?')) { localStorage.removeItem('aihub_improve_history'); addToast('Geçmiş temizlendi', 'info'); } }}
+            onClick={() => {
+              if (confirm('Geçmiş silinsin mi?')) {
+                localStorage.removeItem('aihub_improve_history');
+                addToast('Geçmiş temizlendi', 'info');
+              }
+            }}
             className="ml-auto transition-colors hover:opacity-80"
             style={{ color: 'var(--orange)' }}
           >
@@ -322,7 +406,10 @@ GELİŞTİRME KONUSU: ${s.category}
           onClick={handleGetSuggestions}
           disabled={isAnalyzing}
           className="w-full py-3 rounded-xl text-sm font-semibold transition-all disabled:opacity-40 flex items-center justify-center gap-2"
-          style={{ background: 'linear-gradient(135deg,var(--purple),var(--accent))', color: '#fff' }}
+          style={{
+            background: 'linear-gradient(135deg,var(--purple),var(--accent))',
+            color: '#fff',
+          }}
         >
           {isAnalyzing ? <Loader2 size={16} className="animate-spin" /> : <Sparkles size={16} />}
           {isAnalyzing ? 'Analiz ediliyor...' : 'Öneri Al'}
@@ -332,14 +419,27 @@ GELİŞTİRME KONUSU: ${s.category}
         {log.length > 0 && (
           <div
             className="rounded-xl p-3 space-y-1 text-[11px] leading-relaxed max-h-48 overflow-y-auto"
-            style={{ background: 'var(--surface)', border: '1px solid var(--border)', color: 'var(--text2)' }}
+            style={{
+              background: 'var(--surface)',
+              border: '1px solid var(--border)',
+              color: 'var(--text2)',
+            }}
           >
             {log.map((l, i) => (
               <div key={i}>
                 <span style={{ color: 'var(--text3)' }}>[{l.time}]</span>{' '}
-                <span style={{
-                  color: l.type === 'ok' ? 'var(--green)' : l.type === 'err' ? 'var(--red)' : l.type === 'info' ? 'var(--accent)' : 'var(--text2)',
-                }}>
+                <span
+                  style={{
+                    color:
+                      l.type === 'ok'
+                        ? 'var(--green)'
+                        : l.type === 'err'
+                          ? 'var(--red)'
+                          : l.type === 'info'
+                            ? 'var(--accent)'
+                            : 'var(--text2)',
+                  }}
+                >
                   {l.type === 'ok' ? '✓' : l.type === 'err' ? '✗' : 'ℹ'} {l.msg}
                 </span>
               </div>
@@ -349,13 +449,23 @@ GELİŞTİRME KONUSU: ${s.category}
 
         {/* Sandbox Preview */}
         {sandboxResult && (
-          <div className="rounded-xl p-4 space-y-2" style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}>
-            <div className="flex items-center gap-2 text-xs font-semibold" style={{ color: 'var(--accent)' }}>
+          <div
+            className="rounded-xl p-4 space-y-2"
+            style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}
+          >
+            <div
+              className="flex items-center gap-2 text-xs font-semibold"
+              style={{ color: 'var(--accent)' }}
+            >
               <Eye size={14} /> Önizleme (Sandbox)
             </div>
             <pre
               className="text-[11px] p-3 rounded-lg overflow-x-auto leading-relaxed"
-              style={{ background: 'var(--surface3)', border: '1px solid var(--border2)', color: 'var(--text2)' }}
+              style={{
+                background: 'var(--surface3)',
+                border: '1px solid var(--border2)',
+                color: 'var(--text2)',
+              }}
             >
               {sandboxResult}
             </pre>
@@ -365,7 +475,10 @@ GELİŞTİRME KONUSU: ${s.category}
         {/* Suggestions */}
         {suggestions.length > 0 && (
           <div className="space-y-3">
-            <div className="text-[10px] uppercase tracking-wider font-semibold" style={{ color: 'var(--text3)' }}>
+            <div
+              className="text-[10px] uppercase tracking-wider font-semibold"
+              style={{ color: 'var(--text3)' }}
+            >
               Öneriler
             </div>
             {suggestions.map((s, i) => (
@@ -377,12 +490,26 @@ GELİŞTİRME KONUSU: ${s.category}
                 <div className="text-2xl flex-shrink-0">{s.icon}</div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-1">
-                    <span className="text-sm font-semibold" style={{ color: 'var(--text)' }}>{s.title}</span>
-                    <span className="text-[10px] px-2 py-0.5 rounded-full" style={{ background: 'var(--surface2)', color: 'var(--text3)', border: '1px solid var(--border)' }}>
+                    <span className="text-sm font-semibold" style={{ color: 'var(--text)' }}>
+                      {s.title}
+                    </span>
+                    <span
+                      className="text-[10px] px-2 py-0.5 rounded-full"
+                      style={{
+                        background: 'var(--surface2)',
+                        color: 'var(--text3)',
+                        border: '1px solid var(--border)',
+                      }}
+                    >
                       {s.category}
                     </span>
                   </div>
-                  <div className="text-[12px] leading-relaxed mb-3" style={{ color: 'var(--text2)' }}>{s.detail}</div>
+                  <div
+                    className="text-[12px] leading-relaxed mb-3"
+                    style={{ color: 'var(--text2)' }}
+                  >
+                    {s.detail}
+                  </div>
                   <div className="flex gap-2">
                     <button
                       onClick={() => handleApply(i)}
@@ -390,13 +517,21 @@ GELİŞTİRME KONUSU: ${s.category}
                       className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-semibold transition-all disabled:opacity-40"
                       style={{ background: 'var(--accent)', color: '#fff' }}
                     >
-                      {applyingIdx === i ? <Loader2 size={12} className="animate-spin" /> : <Zap size={12} />}
+                      {applyingIdx === i ? (
+                        <Loader2 size={12} className="animate-spin" />
+                      ) : (
+                        <Zap size={12} />
+                      )}
                       {applyingIdx === i ? 'Uygulanıyor...' : 'Uygula (Diff Inject)'}
                     </button>
                     <button
                       onClick={() => setSuggestions(prev => prev.filter((_, idx) => idx !== i))}
                       className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs transition-all"
-                      style={{ background: 'var(--surface2)', border: '1px solid var(--border2)', color: 'var(--text2)' }}
+                      style={{
+                        background: 'var(--surface2)',
+                        border: '1px solid var(--border2)',
+                        color: 'var(--text2)',
+                      }}
                     >
                       <X size={12} /> Geç
                     </button>
@@ -410,7 +545,10 @@ GELİŞTİRME KONUSU: ${s.category}
         {/* Backups */}
         {showBackups && backups.length > 0 && (
           <div className="space-y-2">
-            <div className="text-[10px] uppercase tracking-wider font-semibold flex items-center gap-2" style={{ color: 'var(--text3)' }}>
+            <div
+              className="text-[10px] uppercase tracking-wider font-semibold flex items-center gap-2"
+              style={{ color: 'var(--text3)' }}
+            >
               <RotateCcw size={12} /> Yedekler
             </div>
             {backups.map(b => (
@@ -421,13 +559,21 @@ GELİŞTİRME KONUSU: ${s.category}
               >
                 <CheckCircle size={14} style={{ color: 'var(--green)', flexShrink: 0 }} />
                 <div className="flex-1 min-w-0">
-                  <div className="text-xs font-medium truncate" style={{ color: 'var(--text)' }}>{b.title}</div>
-                  <div className="text-[10px]" style={{ color: 'var(--text3)' }}>{new Date(b.timestamp).toLocaleString('tr-TR')}</div>
+                  <div className="text-xs font-medium truncate" style={{ color: 'var(--text)' }}>
+                    {b.title}
+                  </div>
+                  <div className="text-[10px]" style={{ color: 'var(--text3)' }}>
+                    {new Date(b.timestamp).toLocaleString('tr-TR')}
+                  </div>
                 </div>
                 <button
                   onClick={() => handleRestore(b.id)}
                   className="px-3 py-1.5 rounded-lg text-[11px] transition-all flex items-center gap-1"
-                  style={{ background: 'var(--surface3)', border: '1px solid var(--border2)', color: 'var(--accent)' }}
+                  style={{
+                    background: 'var(--surface3)',
+                    border: '1px solid var(--border2)',
+                    color: 'var(--accent)',
+                  }}
                 >
                   <RotateCcw size={10} /> Geri Yükle
                 </button>

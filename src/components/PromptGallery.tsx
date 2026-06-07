@@ -14,8 +14,11 @@ export default function PromptGallery({ onSelect, onClose }: PromptGalleryProps)
   const [activeCategory, setActiveCategory] = useState('Tümü');
   const [selected, setSelected] = useState<PromptTemplate | null>(null);
 
-  const filtered = PROMPT_TEMPLATES.filter((t) => {
-    const matchesSearch = !search || t.title.toLowerCase().includes(search.toLowerCase()) || t.description.toLowerCase().includes(search.toLowerCase());
+  const filtered = PROMPT_TEMPLATES.filter(t => {
+    const matchesSearch =
+      !search ||
+      t.title.toLowerCase().includes(search.toLowerCase()) ||
+      t.description.toLowerCase().includes(search.toLowerCase());
     const matchesCat = activeCategory === 'Tümü' || t.category === activeCategory;
     return matchesSearch && matchesCat;
   });
@@ -31,15 +34,27 @@ export default function PromptGallery({ onSelect, onClose }: PromptGalleryProps)
         style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}
       >
         {/* Header */}
-        <div className="flex items-center justify-between px-5 py-4" style={{ borderBottom: '1px solid var(--border)' }}>
+        <div
+          className="flex items-center justify-between px-5 py-4"
+          style={{ borderBottom: '1px solid var(--border)' }}
+        >
           <div className="flex items-center gap-2">
             <Sparkles size={18} style={{ color: 'var(--purple)' }} />
-            <span className="font-semibold text-sm" style={{ color: 'var(--text)' }}>Prompt Galerisi</span>
-            <span className="text-[10px] px-2 py-0.5 rounded-full" style={{ background: 'var(--surface2)', color: 'var(--text3)' }}>
+            <span className="font-semibold text-sm" style={{ color: 'var(--text)' }}>
+              Prompt Galerisi
+            </span>
+            <span
+              className="text-[10px] px-2 py-0.5 rounded-full"
+              style={{ background: 'var(--surface2)', color: 'var(--text3)' }}
+            >
               {PROMPT_TEMPLATES.length} sablon
             </span>
           </div>
-          <button onClick={onClose} className="p-1 rounded-lg hover:bg-[var(--surface2)] transition-colors" style={{ color: 'var(--text3)' }}>
+          <button
+            onClick={onClose}
+            className="p-1 rounded-lg hover:bg-[var(--surface2)] transition-colors"
+            style={{ color: 'var(--text3)' }}
+          >
             <X size={18} />
           </button>
         </div>
@@ -47,21 +62,32 @@ export default function PromptGallery({ onSelect, onClose }: PromptGalleryProps)
         {/* Search */}
         <div className="px-5 py-3" style={{ borderBottom: '1px solid var(--border)' }}>
           <div className="relative">
-            <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2" style={{ color: 'var(--text3)' }} />
+            <Search
+              size={14}
+              className="absolute left-3 top-1/2 -translate-y-1/2"
+              style={{ color: 'var(--text3)' }}
+            />
             <input
               type="text"
               value={search}
-              onChange={(e) => setSearch(e.target.value)}
+              onChange={e => setSearch(e.target.value)}
               placeholder="Prompt ara..."
               className="w-full rounded-lg pl-9 pr-3 py-2 text-sm outline-none"
-              style={{ background: 'var(--surface2)', border: '1px solid var(--border)', color: 'var(--text)' }}
+              style={{
+                background: 'var(--surface2)',
+                border: '1px solid var(--border)',
+                color: 'var(--text)',
+              }}
             />
           </div>
         </div>
 
         {/* Categories */}
-        <div className="flex gap-1.5 px-5 py-2 overflow-x-auto flex-shrink-0" style={{ borderBottom: '1px solid var(--border)' }}>
-          {['Tumu', ...PROMPT_CATEGORIES].map((cat) => (
+        <div
+          className="flex gap-1.5 px-5 py-2 overflow-x-auto flex-shrink-0"
+          style={{ borderBottom: '1px solid var(--border)' }}
+        >
+          {['Tumu', ...PROMPT_CATEGORIES].map(cat => (
             <button
               key={cat}
               onClick={() => setActiveCategory(cat)}
@@ -92,16 +118,31 @@ export default function PromptGallery({ onSelect, onClose }: PromptGalleryProps)
               >
                 <div className="flex items-center gap-2 mb-1">
                   <span className="text-lg">{t.icon}</span>
-                  <span className="text-sm font-medium flex-1" style={{ color: 'var(--text)' }}>{t.title}</span>
-                  <span className="text-[10px] px-2 py-0.5 rounded-full" style={{ background: 'var(--surface3)', color: 'var(--text3)' }}>{t.category}</span>
-                  <ChevronRight size={14} className="opacity-0 group-hover:opacity-100 transition-opacity" style={{ color: 'var(--accent)' }} />
+                  <span className="text-sm font-medium flex-1" style={{ color: 'var(--text)' }}>
+                    {t.title}
+                  </span>
+                  <span
+                    className="text-[10px] px-2 py-0.5 rounded-full"
+                    style={{ background: 'var(--surface3)', color: 'var(--text3)' }}
+                  >
+                    {t.category}
+                  </span>
+                  <ChevronRight
+                    size={14}
+                    className="opacity-0 group-hover:opacity-100 transition-opacity"
+                    style={{ color: 'var(--accent)' }}
+                  />
                 </div>
-                <p className="text-[11px] ml-7" style={{ color: 'var(--text2)' }}>{t.description}</p>
+                <p className="text-[11px] ml-7" style={{ color: 'var(--text2)' }}>
+                  {t.description}
+                </p>
               </motion.div>
             ))}
           </AnimatePresence>
           {filtered.length === 0 && (
-            <div className="text-center py-8 text-sm" style={{ color: 'var(--text3)' }}>Sonuc bulunamadi</div>
+            <div className="text-center py-8 text-sm" style={{ color: 'var(--text3)' }}>
+              Sonuc bulunamadi
+            </div>
           )}
         </div>
 
@@ -122,25 +163,39 @@ export default function PromptGallery({ onSelect, onClose }: PromptGalleryProps)
                 exit={{ scale: 0.9, opacity: 0 }}
                 className="w-full max-w-lg rounded-xl p-5 space-y-3"
                 style={{ background: 'var(--surface)', border: '1px solid var(--accent)' }}
-                onClick={(e) => e.stopPropagation()}
+                onClick={e => e.stopPropagation()}
               >
                 <div className="flex items-center gap-2">
                   <span className="text-2xl">{selected.icon}</span>
                   <div>
-                    <div className="font-semibold text-sm" style={{ color: 'var(--text)' }}>{selected.title}</div>
-                    <div className="text-[10px]" style={{ color: 'var(--text3)' }}>{selected.category}</div>
+                    <div className="font-semibold text-sm" style={{ color: 'var(--text)' }}>
+                      {selected.title}
+                    </div>
+                    <div className="text-[10px]" style={{ color: 'var(--text3)' }}>
+                      {selected.category}
+                    </div>
                   </div>
                 </div>
-                <p className="text-xs" style={{ color: 'var(--text2)' }}>{selected.description}</p>
+                <p className="text-xs" style={{ color: 'var(--text2)' }}>
+                  {selected.description}
+                </p>
                 <pre
                   className="text-[11px] p-3 rounded-lg overflow-auto max-h-[200px]"
-                  style={{ background: 'var(--surface3)', border: '1px solid var(--border2)', color: 'var(--text)', lineHeight: '1.6' }}
+                  style={{
+                    background: 'var(--surface3)',
+                    border: '1px solid var(--border2)',
+                    color: 'var(--text)',
+                    lineHeight: '1.6',
+                  }}
                 >
                   {selected.prompt}
                 </pre>
                 <div className="flex gap-2">
                   <button
-                    onClick={() => { onSelect(selected.prompt); onClose(); }}
+                    onClick={() => {
+                      onSelect(selected.prompt);
+                      onClose();
+                    }}
                     className="flex-1 py-2.5 rounded-lg text-xs font-semibold transition-all"
                     style={{ background: 'var(--accent)', color: '#fff' }}
                   >
@@ -149,7 +204,11 @@ export default function PromptGallery({ onSelect, onClose }: PromptGalleryProps)
                   <button
                     onClick={() => setSelected(null)}
                     className="px-4 py-2.5 rounded-lg text-xs transition-all"
-                    style={{ background: 'var(--surface2)', border: '1px solid var(--border)', color: 'var(--text2)' }}
+                    style={{
+                      background: 'var(--surface2)',
+                      border: '1px solid var(--border)',
+                      color: 'var(--text2)',
+                    }}
                   >
                     Kapat
                   </button>

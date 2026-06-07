@@ -7,7 +7,8 @@ interface DiffViewerProps {
 }
 
 export const DiffViewer: React.FC<DiffViewerProps> = ({ left, right }) => {
-  if (!left || !right) return <div className="text-center text-gray-500">İki versiyon seçmelisiniz</div>;
+  if (!left || !right)
+    return <div className="text-center text-gray-500">İki versiyon seçmelisiniz</div>;
 
   const diff = computeDiff(left.snapshot, right.snapshot);
 
@@ -27,7 +28,16 @@ export const DiffViewer: React.FC<DiffViewerProps> = ({ left, right }) => {
       <div className="bg-gray-900 rounded-lg p-4 overflow-auto max-h-96">
         <pre className="text-sm font-mono">
           {diff.map((line, i) => (
-            <div key={i} className={line.type === 'added' ? 'text-green-400' : line.type === 'removed' ? 'text-red-400' : 'text-gray-300'}>
+            <div
+              key={i}
+              className={
+                line.type === 'added'
+                  ? 'text-green-400'
+                  : line.type === 'removed'
+                    ? 'text-red-400'
+                    : 'text-gray-300'
+              }
+            >
               {line.type === 'added' ? '+' : line.type === 'removed' ? '-' : ' '} {line.content}
             </div>
           ))}
@@ -37,7 +47,10 @@ export const DiffViewer: React.FC<DiffViewerProps> = ({ left, right }) => {
   );
 };
 
-interface DiffLine { type: 'added' | 'removed' | 'unchanged'; content: string; }
+interface DiffLine {
+  type: 'added' | 'removed' | 'unchanged';
+  content: string;
+}
 
 function computeDiff(left: Record<string, unknown>, right: Record<string, unknown>): DiffLine[] {
   const allKeys = new Set([...Object.keys(left), ...Object.keys(right)]);

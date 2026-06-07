@@ -17,7 +17,7 @@ export const ResearchImproveHub: React.FC = () => {
   const handleSearch = useCallback(async () => {
     if (!query.trim()) return;
     setLoading(true);
-    
+
     try {
       const mockResults: ResearchResult[] = [
         {
@@ -27,7 +27,7 @@ export const ResearchImproveHub: React.FC = () => {
           timestamp: Date.now(),
         },
       ];
-      
+
       setResults(mockResults);
     } catch (error: unknown) {
       console.error('Research error:', error);
@@ -43,15 +43,13 @@ export const ResearchImproveHub: React.FC = () => {
 
   return (
     <div className="p-6 space-y-4">
-      <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
-        Research & Improve Hub
-      </h2>
-      
+      <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Research & Improve Hub</h2>
+
       <div className="flex gap-2">
         <input
           type="text"
           value={query}
-          onChange={(e) => setQuery(e.target.value)}
+          onChange={e => setQuery(e.target.value)}
           placeholder="Enter research topic..."
           className="flex-1 px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
         />
@@ -71,7 +69,7 @@ export const ResearchImproveHub: React.FC = () => {
       </div>
 
       <div className="space-y-2">
-        {results.map((result) => (
+        {results.map(result => (
           <div
             key={result.id}
             className="p-4 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800"
@@ -89,4 +87,3 @@ export const ResearchImproveHub: React.FC = () => {
 };
 
 export default ResearchImproveHub;
-

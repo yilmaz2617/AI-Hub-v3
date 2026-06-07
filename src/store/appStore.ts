@@ -12,7 +12,13 @@ export interface AppState {
   messages: Array<{ id: string; role: 'user' | 'assistant'; content: string; timestamp: number }>;
 
   // Improve State
-  improveHistory: Array<{ id: string; input: string; output: string; model: string; timestamp: number }>;
+  improveHistory: Array<{
+    id: string;
+    input: string;
+    output: string;
+    model: string;
+    timestamp: number;
+  }>;
 
   // API Keys
   groqApiKey: string;
@@ -56,23 +62,31 @@ export const useAppStore = create<AppState>()(
         },
 
         // Actions
-        setActivePanel: (panel) => set({ activePanel: panel }),
-        setTheme: (theme) => set({ theme }),
-        toggleSidebar: () => set((s) => ({ sidebarCollapsed: !s.sidebarCollapsed })),
-        addMessage: (message) => set((s) => ({
-          messages: [...s.messages, { ...message, id: crypto.randomUUID(), timestamp: Date.now() }],
-        })),
+        setActivePanel: panel => set({ activePanel: panel }),
+        setTheme: theme => set({ theme }),
+        toggleSidebar: () => set(s => ({ sidebarCollapsed: !s.sidebarCollapsed })),
+        addMessage: message =>
+          set(s => ({
+            messages: [
+              ...s.messages,
+              { ...message, id: crypto.randomUUID(), timestamp: Date.now() },
+            ],
+          })),
         clearMessages: () => set({ messages: [] }),
-        addImproveHistory: (item) => set((s) => ({
-          improveHistory: [...s.improveHistory, { ...item, id: crypto.randomUUID(), timestamp: Date.now() }],
-        })),
-        setGroqApiKey: (key) => set({ groqApiKey: key }),
-        setGeminiApiKey: (key) => set({ geminiApiKey: key }),
-        setSyncState: (state) => set((s) => ({ _sync: { ...s._sync, ...state } })),
+        addImproveHistory: item =>
+          set(s => ({
+            improveHistory: [
+              ...s.improveHistory,
+              { ...item, id: crypto.randomUUID(), timestamp: Date.now() },
+            ],
+          })),
+        setGroqApiKey: key => set({ groqApiKey: key }),
+        setGeminiApiKey: key => set({ geminiApiKey: key }),
+        setSyncState: state => set(s => ({ _sync: { ...s._sync, ...state } })),
       }),
       {
         name: 'ai-hub-v3-storage',
-        partialize: (state) => ({
+        partialize: state => ({
           activePanel: state.activePanel,
           theme: state.theme,
           sidebarCollapsed: state.sidebarCollapsed,
@@ -94,12 +108,11 @@ export function initAutoSync(): () => void {
   if (unsubscribeAutoSync) return unsubscribeAutoSync;
 
   unsubscribeAutoSync = useAppStore.subscribe(
-    (state) => state,
-    (state) => {
+    state => state,
+    state => {
       autoSync.trigger(state);
     }
   );
 
   return unsubscribeAutoSync;
 }
-

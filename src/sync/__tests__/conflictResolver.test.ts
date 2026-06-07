@@ -30,13 +30,31 @@ describe('detectConflicts', () => {
 
 describe('resolveByLWW', () => {
   it('should prefer local when local is newer', () => {
-    const conflicts = [{ key: 'x', localValue: 'a', remoteValue: 'b', localTime: 2000, remoteTime: 1000, resolved: false }];
+    const conflicts = [
+      {
+        key: 'x',
+        localValue: 'a',
+        remoteValue: 'b',
+        localTime: 2000,
+        remoteTime: 1000,
+        resolved: false,
+      },
+    ];
     const result = resolveByLWW(conflicts);
     expect(result.winner).toBe('local');
   });
 
   it('should prefer remote when remote is newer', () => {
-    const conflicts = [{ key: 'x', localValue: 'a', remoteValue: 'b', localTime: 1000, remoteTime: 2000, resolved: false }];
+    const conflicts = [
+      {
+        key: 'x',
+        localValue: 'a',
+        remoteValue: 'b',
+        localTime: 1000,
+        remoteTime: 2000,
+        resolved: false,
+      },
+    ];
     const result = resolveByLWW(conflicts);
     expect(result.winner).toBe('remote');
   });
@@ -47,8 +65,24 @@ describe('mergeStates', () => {
     const local = { name: 'Alice', age: 30 };
     const remote = { name: 'Bob', age: 25 };
     const conflicts = [
-      { key: 'name', localValue: 'Alice', remoteValue: 'Bob', localTime: 2000, remoteTime: 1000, resolved: true, resolution: 'local' as const },
-      { key: 'age', localValue: 30, remoteValue: 25, localTime: 2000, remoteTime: 1000, resolved: true, resolution: 'local' as const },
+      {
+        key: 'name',
+        localValue: 'Alice',
+        remoteValue: 'Bob',
+        localTime: 2000,
+        remoteTime: 1000,
+        resolved: true,
+        resolution: 'local' as const,
+      },
+      {
+        key: 'age',
+        localValue: 30,
+        remoteValue: 25,
+        localTime: 2000,
+        remoteTime: 1000,
+        resolved: true,
+        resolution: 'local' as const,
+      },
     ];
     const merged = mergeStates(local, remote, conflicts);
     expect(merged.name).toBe('Alice');

@@ -24,7 +24,7 @@ export default function StatusPanel() {
   const checkOne = useCallback(async (api: APIKeyEntry) => {
     if (!api.key) return;
     setChecking(prev => new Set(prev).add(api.id));
-    setApis(prev => prev.map(a => a.id === api.id ? { ...a, status: 'checking' } : a));
+    setApis(prev => prev.map(a => (a.id === api.id ? { ...a, status: 'checking' } : a)));
 
     const def = API_DEFS.find(d => d.id === api.id);
     if (!def) return;
@@ -39,21 +39,29 @@ export default function StatusPanel() {
       });
       clearTimeout(timeout);
 
-      const status: APIKeyEntry['status'] = (res.ok || res.status === 400 || res.status === 403) ? 'up' : 'down';
-      setApis(prev => prev.map(a => a.id === api.id ? { ...a, status } : a));
+      const status: APIKeyEntry['status'] =
+        res.ok || res.status === 400 || res.status === 403 ? 'up' : 'down';
+      setApis(prev => prev.map(a => (a.id === api.id ? { ...a, status } : a)));
     } catch {
-      setApis(prev => prev.map(a => a.id === api.id ? { ...a, status: 'down' } : a));
+      setApis(prev => prev.map(a => (a.id === api.id ? { ...a, status: 'down' } : a)));
     }
-    setChecking(prev => { const n = new Set(prev); n.delete(api.id); return n; });
+    setChecking(prev => {
+      const n = new Set(prev);
+      n.delete(api.id);
+      return n;
+    });
   }, []);
 
   const checkAll = () => {
     apis.filter(a => a.key).forEach(api => checkOne(api));
-    addToast('Tüm API\'ler kontrol ediliyor...', 'info');
+    addToast("Tüm API'ler kontrol ediliyor...", 'info');
   };
 
   const handleSave = (id: string, value: string) => {
-    if (!value.trim()) { addToast('Key boş!', 'warning'); return; }
+    if (!value.trim()) {
+      addToast('Key boş!', 'warning');
+      return;
+    }
     setApiKey(id, value.trim());
     addToast('✓ ' + id + ' kaydedildi', 'success');
     checkOne({ ...apis.find(a => a.id === id)!, key: value.trim() });
@@ -86,10 +94,15 @@ export default function StatusPanel() {
   return (
     <div className="flex flex-col h-full overflow-hidden">
       {/* Header */}
-      <div className="flex items-center justify-between px-4 py-2.5 flex-shrink-0" style={{ borderBottom: '1px solid var(--border)' }}>
+      <div
+        className="flex items-center justify-between px-4 py-2.5 flex-shrink-0"
+        style={{ borderBottom: '1px solid var(--border)' }}
+      >
         <div className="flex items-center gap-2">
           <Wifi size={16} style={{ color: 'var(--green)' }} />
-          <span className="font-semibold text-sm" style={{ color: 'var(--text)' }}>API Durumu</span>
+          <span className="font-semibold text-sm" style={{ color: 'var(--text)' }}>
+            API Durumu
+          </span>
         </div>
         <button
           onClick={checkAll}
@@ -112,13 +125,29 @@ export default function StatusPanel() {
               }}
             >
               <div className="flex items-center justify-between mb-2">
-                <span className="text-sm font-semibold" style={{ color: 'var(--text)' }}>{api.name}</span>
+                <span className="text-sm font-semibold" style={{ color: 'var(--text)' }}>
+                  {api.name}
+                </span>
                 <div
                   className="flex items-center gap-1.5 text-[11px] px-2 py-0.5 rounded-full"
                   style={{
                     border: `1px solid ${statusBorders[api.status]}`,
-                    color: api.status === 'up' ? 'var(--green)' : api.status === 'down' ? 'var(--red)' : api.status === 'nokey' ? 'var(--yellow)' : 'var(--text3)',
-                    background: api.status === 'up' ? 'rgba(63,185,80,0.08)' : api.status === 'down' ? 'rgba(247,129,102,0.08)' : api.status === 'nokey' ? 'rgba(227,179,65,0.08)' : 'transparent',
+                    color:
+                      api.status === 'up'
+                        ? 'var(--green)'
+                        : api.status === 'down'
+                          ? 'var(--red)'
+                          : api.status === 'nokey'
+                            ? 'var(--yellow)'
+                            : 'var(--text3)',
+                    background:
+                      api.status === 'up'
+                        ? 'rgba(63,185,80,0.08)'
+                        : api.status === 'down'
+                          ? 'rgba(247,129,102,0.08)'
+                          : api.status === 'nokey'
+                            ? 'rgba(227,179,65,0.08)'
+                            : 'transparent',
                   }}
                 >
                   {statusIcons[api.status]}
@@ -126,17 +155,27 @@ export default function StatusPanel() {
                 </div>
               </div>
 
-              <p className="text-[11px] mb-3 leading-relaxed" style={{ color: 'var(--text2)' }}>{api.desc}</p>
+              <p className="text-[11px] mb-3 leading-relaxed" style={{ color: 'var(--text2)' }}>
+                {api.desc}
+              </p>
 
               <div className="flex gap-2">
                 <div className="relative flex-1">
-                  <Key size={12} className="absolute left-2.5 top-1/2 -translate-y-1/2" style={{ color: 'var(--text3)' }} />
+                  <Key
+                    size={12}
+                    className="absolute left-2.5 top-1/2 -translate-y-1/2"
+                    style={{ color: 'var(--text3)' }}
+                  />
                   <input
                     type="password"
                     defaultValue={api.key}
                     placeholder="API key girin..."
                     className="w-full rounded-lg pl-8 pr-3 py-2 text-xs outline-none transition-colors focus:border-[var(--accent)]"
-                    style={{ background: 'var(--surface2)', border: '1px solid var(--border)', color: 'var(--text)' }}
+                    style={{
+                      background: 'var(--surface2)',
+                      border: '1px solid var(--border)',
+                      color: 'var(--text)',
+                    }}
                     onChange={() => {
                       // Update local state only, save on button click
                     }}
@@ -149,11 +188,17 @@ export default function StatusPanel() {
                 </div>
                 <button
                   onClick={() => {
-                    const input = document.querySelector(`input[type="password"][data-api="${api.id}"]`) as HTMLInputElement;
+                    const input = document.querySelector(
+                      `input[type="password"][data-api="${api.id}"]`
+                    ) as HTMLInputElement;
                     handleSave(api.id, input?.value || '');
                   }}
                   className="px-3 py-2 rounded-lg text-xs transition-all flex items-center gap-1"
-                  style={{ background: 'var(--surface2)', border: '1px solid var(--border2)', color: 'var(--accent)' }}
+                  style={{
+                    background: 'var(--surface2)',
+                    border: '1px solid var(--border2)',
+                    color: 'var(--accent)',
+                  }}
                 >
                   <Save size={12} /> Kaydet
                 </button>
@@ -163,12 +208,25 @@ export default function StatusPanel() {
         </div>
 
         {/* Info */}
-        <div className="mt-4 rounded-xl p-4 text-[11px] leading-relaxed" style={{ background: 'var(--surface2)', border: '1px solid var(--border)', color: 'var(--text2)' }}>
-          <div className="flex items-center gap-2 mb-2 font-semibold" style={{ color: 'var(--accent)' }}>
+        <div
+          className="mt-4 rounded-xl p-4 text-[11px] leading-relaxed"
+          style={{
+            background: 'var(--surface2)',
+            border: '1px solid var(--border)',
+            color: 'var(--text2)',
+          }}
+        >
+          <div
+            className="flex items-center gap-2 mb-2 font-semibold"
+            style={{ color: 'var(--accent)' }}
+          >
             <CheckCircle size={14} /> Bilgi
           </div>
           <ul className="space-y-1">
-            <li>• API key'leriniz sadece tarayıcınızda (localStorage) saklanır, sunuculara gönderilmez.</li>
+            <li>
+              • API key'leriniz sadece tarayıcınızda (localStorage) saklanır, sunuculara
+              gönderilmez.
+            </li>
             <li>• Groq, Gemini, Anthropic ve OpenRouter için ücretsiz tier mevcuttur.</li>
             <li>• Pollinations için API key gerekmez.</li>
             <li>• Premium Free modelleri kullanmak için OpenRouter key eklemeniz önerilir.</li>

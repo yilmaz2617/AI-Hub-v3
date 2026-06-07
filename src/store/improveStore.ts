@@ -19,15 +19,15 @@ export interface ImproveState {
   clearSuggestions: () => void;
 }
 
-export const useImproveStore = create<ImproveState>((set) => ({
+export const useImproveStore = create<ImproveState>(set => ({
   code: '',
   suggestions: [],
   loading: false,
   error: null,
 
-  setCode: (code) => set({ code }),
+  setCode: code => set({ code }),
 
-  analyzeCode: async (code) => {
+  analyzeCode: async code => {
     set({ loading: true, error: null });
     try {
       await new Promise(resolve => setTimeout(resolve, 1500));
@@ -66,4 +66,3 @@ export const useImproveStore = create<ImproveState>((set) => ({
 
   clearSuggestions: () => set({ suggestions: [], error: null }),
 }));
-

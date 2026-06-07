@@ -27,4 +27,3 @@ describe('versionManager', () => {
     expect(Array.isArray(versions)).toBe(true);
   });
 });
-

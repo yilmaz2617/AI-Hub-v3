@@ -1,8 +1,19 @@
 ﻿import React, { useState } from 'react';
 import {
-  Wifi, WifiOff, Loader2, Play, Trash2, Terminal,
-  Globe, MousePointer, Type, Camera, Code, RefreshCw,
-  AlertCircle, CheckCircle
+  Wifi,
+  WifiOff,
+  Loader2,
+  Play,
+  Trash2,
+  Terminal,
+  Globe,
+  MousePointer,
+  Type,
+  Camera,
+  Code,
+  RefreshCw,
+  AlertCircle,
+  CheckCircle,
 } from 'lucide-react';
 import { useWebBridge } from '../hooks/useWebBridge';
 
@@ -25,19 +36,27 @@ export default function WebBridgePanel() {
 
   const getStatusIcon = () => {
     switch (wb.status) {
-      case 'connected': return <Wifi className="w-5 h-5 text-green-500" />;
-      case 'connecting': return <Loader2 className="w-5 h-5 text-yellow-500 animate-spin" />;
-      case 'error': return <AlertCircle className="w-5 h-5 text-red-500" />;
-      default: return <WifiOff className="w-5 h-5 text-gray-400" />;
+      case 'connected':
+        return <Wifi className="w-5 h-5 text-green-500" />;
+      case 'connecting':
+        return <Loader2 className="w-5 h-5 text-yellow-500 animate-spin" />;
+      case 'error':
+        return <AlertCircle className="w-5 h-5 text-red-500" />;
+      default:
+        return <WifiOff className="w-5 h-5 text-gray-400" />;
     }
   };
 
   const getStatusText = () => {
     switch (wb.status) {
-      case 'connected': return 'Bağlı';
-      case 'connecting': return 'Bağlanıyor...';
-      case 'error': return 'Hata';
-      default: return 'Bağlı Değil';
+      case 'connected':
+        return 'Bağlı';
+      case 'connecting':
+        return 'Bağlanıyor...';
+      case 'error':
+        return 'Hata';
+      default:
+        return 'Bağlı Değil';
     }
   };
 
@@ -68,7 +87,7 @@ export default function WebBridgePanel() {
               <input
                 type="text"
                 value={toolArgs.url || ''}
-                onChange={(e) => setToolArgs({ ...toolArgs, url: e.target.value })}
+                onChange={e => setToolArgs({ ...toolArgs, url: e.target.value })}
                 placeholder="https://example.com"
                 className="w-full px-3 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-700"
               />
@@ -77,7 +96,9 @@ export default function WebBridgePanel() {
               <input
                 type="checkbox"
                 checked={toolArgs.newTab === 'true'}
-                onChange={(e) => setToolArgs({ ...toolArgs, newTab: e.target.checked ? 'true' : 'false' })}
+                onChange={e =>
+                  setToolArgs({ ...toolArgs, newTab: e.target.checked ? 'true' : 'false' })
+                }
                 className="rounded"
               />
               <span className="text-sm text-gray-600 dark:text-gray-400">Yeni sekmede aç</span>
@@ -87,7 +108,8 @@ export default function WebBridgePanel() {
       case 'snapshot':
         return (
           <div className="text-sm text-gray-500 dark:text-gray-400">
-            Snapshot almak için çalıştır butonuna tıklayın. Aktif sekmenin erişilebilirlik ağacı döndürülür.
+            Snapshot almak için çalıştır butonuna tıklayın. Aktif sekmenin erişilebilirlik ağacı
+            döndürülür.
           </div>
         );
       case 'click':
@@ -99,7 +121,7 @@ export default function WebBridgePanel() {
             <input
               type="text"
               value={toolArgs.selector || ''}
-              onChange={(e) => setToolArgs({ ...toolArgs, selector: e.target.value })}
+              onChange={e => setToolArgs({ ...toolArgs, selector: e.target.value })}
               placeholder="#button veya @e1"
               className="w-full px-3 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-700"
             />
@@ -115,7 +137,7 @@ export default function WebBridgePanel() {
               <input
                 type="text"
                 value={toolArgs.selector || ''}
-                onChange={(e) => setToolArgs({ ...toolArgs, selector: e.target.value })}
+                onChange={e => setToolArgs({ ...toolArgs, selector: e.target.value })}
                 placeholder="#input-field"
                 className="w-full px-3 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-700"
               />
@@ -127,7 +149,7 @@ export default function WebBridgePanel() {
               <input
                 type="text"
                 value={toolArgs.value || ''}
-                onChange={(e) => setToolArgs({ ...toolArgs, value: e.target.value })}
+                onChange={e => setToolArgs({ ...toolArgs, value: e.target.value })}
                 placeholder="Yazılacak metin"
                 className="w-full px-3 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-700"
               />
@@ -143,7 +165,7 @@ export default function WebBridgePanel() {
               </label>
               <select
                 value={toolArgs.format || 'png'}
-                onChange={(e) => setToolArgs({ ...toolArgs, format: e.target.value })}
+                onChange={e => setToolArgs({ ...toolArgs, format: e.target.value })}
                 className="w-full px-3 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-700"
               >
                 <option value="png">PNG</option>
@@ -157,7 +179,7 @@ export default function WebBridgePanel() {
               <input
                 type="text"
                 value={toolArgs.selector || ''}
-                onChange={(e) => setToolArgs({ ...toolArgs, selector: e.target.value })}
+                onChange={e => setToolArgs({ ...toolArgs, selector: e.target.value })}
                 placeholder="#element"
                 className="w-full px-3 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-700"
               />
@@ -172,7 +194,7 @@ export default function WebBridgePanel() {
             </label>
             <textarea
               value={toolArgs.code || ''}
-              onChange={(e) => setToolArgs({ ...toolArgs, code: e.target.value })}
+              onChange={e => setToolArgs({ ...toolArgs, code: e.target.value })}
               placeholder="document.title"
               rows={4}
               className="w-full px-3 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-700 font-mono text-sm"
@@ -197,19 +219,22 @@ export default function WebBridgePanel() {
               <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
                 Kimi WebBridge
               </h2>
-              <p className="text-xs text-gray-500 dark:text-gray-400">
-                Tarayıcı Otomasyonu
-              </p>
+              <p className="text-xs text-gray-500 dark:text-gray-400">Tarayıcı Otomasyonu</p>
             </div>
           </div>
           <div className="flex items-center gap-2">
             {getStatusIcon()}
-            <span className={`text-sm font-medium ${
-              wb.status === 'connected' ? 'text-green-600' :
-              wb.status === 'error' ? 'text-red-600' :
-              wb.status === 'connecting' ? 'text-yellow-600' :
-              'text-gray-500'
-            }`}>
+            <span
+              className={`text-sm font-medium ${
+                wb.status === 'connected'
+                  ? 'text-green-600'
+                  : wb.status === 'error'
+                    ? 'text-red-600'
+                    : wb.status === 'connecting'
+                      ? 'text-yellow-600'
+                      : 'text-gray-500'
+              }`}
+            >
               {getStatusText()}
             </span>
           </div>
@@ -226,7 +251,7 @@ export default function WebBridgePanel() {
             <input
               type="text"
               value={wb.serverUrl}
-              onChange={(e) => wb.setServerUrl(e.target.value)}
+              onChange={e => wb.setServerUrl(e.target.value)}
               disabled={wb.status === 'connected'}
               className="w-full px-3 py-2 text-sm border rounded-lg dark:bg-gray-800 dark:border-gray-700 disabled:opacity-50"
             />
@@ -287,22 +312,29 @@ export default function WebBridgePanel() {
           Araçlar
         </h3>
         <div className="grid grid-cols-3 gap-2">
-          {TOOLS.map((tool) => {
+          {TOOLS.map(tool => {
             const Icon = tool.icon;
             return (
               <button
                 key={tool.name}
-                onClick={() => { setSelectedTool(tool.name); setToolArgs({}); }}
+                onClick={() => {
+                  setSelectedTool(tool.name);
+                  setToolArgs({});
+                }}
                 className={`p-3 rounded-lg border text-left transition-all ${
                   selectedTool === tool.name
                     ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
                     : 'border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800'
                 }`}
               >
-                <Icon className={`w-4 h-4 mb-1 ${
-                  selectedTool === tool.name ? 'text-blue-600' : 'text-gray-500'
-                }`} />
-                <div className="text-xs font-medium text-gray-900 dark:text-white">{tool.label}</div>
+                <Icon
+                  className={`w-4 h-4 mb-1 ${
+                    selectedTool === tool.name ? 'text-blue-600' : 'text-gray-500'
+                  }`}
+                />
+                <div className="text-xs font-medium text-gray-900 dark:text-white">
+                  {tool.label}
+                </div>
                 <div className="text-[10px] text-gray-500 dark:text-gray-400">{tool.desc}</div>
               </button>
             );
@@ -322,7 +354,11 @@ export default function WebBridgePanel() {
             disabled={isExecuting || wb.status !== 'connected'}
             className="w-full px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-sm font-medium disabled:opacity-50 flex items-center justify-center gap-2"
           >
-            {isExecuting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Play className="w-4 h-4" />}
+            {isExecuting ? (
+              <Loader2 className="w-4 h-4 animate-spin" />
+            ) : (
+              <Play className="w-4 h-4" />
+            )}
             {isExecuting ? 'Çalıştırılıyor...' : 'Çalıştır'}
           </button>
         </div>
@@ -348,11 +384,13 @@ export default function WebBridgePanel() {
 
         {wb.lastResult ? (
           <div className="space-y-2">
-            <div className={`p-3 rounded-lg border ${
-              wb.lastResult.error 
-                ? 'bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800' 
-                : 'bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800'
-            }`}>
+            <div
+              className={`p-3 rounded-lg border ${
+                wb.lastResult.error
+                  ? 'bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800'
+                  : 'bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800'
+              }`}
+            >
               <div className="flex items-center justify-between mb-1">
                 <span className="text-xs font-medium text-gray-600 dark:text-gray-400">
                   {wb.lastResult.name}
@@ -383,7 +421,7 @@ export default function WebBridgePanel() {
               Geçmiş ({wb.toolHistory.length})
             </h4>
             <div className="space-y-1 max-h-32 overflow-auto">
-              {wb.toolHistory.slice(0, 10).map((call) => (
+              {wb.toolHistory.slice(0, 10).map(call => (
                 <div
                   key={call.id}
                   className="p-2 bg-white dark:bg-gray-800 rounded border dark:border-gray-700 text-xs"
@@ -401,9 +439,3 @@ export default function WebBridgePanel() {
     </div>
   );
 }
-
-
-
-
-
-
