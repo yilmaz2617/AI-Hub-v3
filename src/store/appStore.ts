@@ -6,7 +6,7 @@ export interface AppState {
   // UI State
   activePanel: string;
   theme: 'light' | 'dark' | 'system';
-  sidebarCollapsed: boolean;
+  isSidebarOpen: boolean;
 
   // Chat State
   messages: Array<{ id: string; role: 'user' | 'assistant'; content: string; timestamp: number }>;
@@ -32,6 +32,7 @@ export interface AppState {
   };
 
   // Actions
+  setPanel: (panel: string) => void;
   setActivePanel: (panel: string) => void;
   setTheme: (theme: 'light' | 'dark' | 'system') => void;
   toggleSidebar: () => void;
@@ -50,7 +51,7 @@ export const useAppStore = create<AppState>()(
         // Initial state
         activePanel: 'chat',
         theme: 'system',
-        sidebarCollapsed: false,
+        isSidebarOpen: true,
         messages: [],
         improveHistory: [],
         groqApiKey: '',
@@ -62,9 +63,10 @@ export const useAppStore = create<AppState>()(
         },
 
         // Actions
+        setPanel: panel => set({ activePanel: panel }),
         setActivePanel: panel => set({ activePanel: panel }),
         setTheme: theme => set({ theme }),
-        toggleSidebar: () => set(s => ({ sidebarCollapsed: !s.sidebarCollapsed })),
+        toggleSidebar: () => set(s => ({ isSidebarOpen: !s.isSidebarOpen })),
         addMessage: message =>
           set(s => ({
             messages: [
@@ -89,7 +91,7 @@ export const useAppStore = create<AppState>()(
         partialize: state => ({
           activePanel: state.activePanel,
           theme: state.theme,
-          sidebarCollapsed: state.sidebarCollapsed,
+          isSidebarOpen: state.isSidebarOpen,
           messages: state.messages,
           improveHistory: state.improveHistory,
           groqApiKey: state.groqApiKey,
