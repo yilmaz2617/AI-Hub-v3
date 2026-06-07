@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { syncEngine } from '../engine';
+import { syncEngine } from '../sync/engine';
 
 describe('syncEngine', () => {
   it('should create device id', () => {

@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { lazyComponents } from '../lazyComponents';
+import { lazyComponents } from '../performance/lazyComponents';
 
 describe('lazyComponents', () => {
   it('should export all panel components', () => {

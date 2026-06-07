@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { hashContent, detectConflicts, resolveByLWW, mergeStates } from '../conflictResolver';
+import { hashContent, detectConflicts, resolveByLWW, mergeStates } from '../sync/conflictResolver';
 
 describe('hashContent', () => {
   it('should return consistent hash for same object', () => {

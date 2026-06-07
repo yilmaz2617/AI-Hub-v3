@@ -1,5 +1,5 @@
-﻿import { describe, it, expect } from 'vitest';
-import { versionManager } from '../versionManager';
+import { describe, it, expect } from 'vitest';
+import { versionManager } from '../sync/versionManager';
 
 describe('versionManager', () => {
   it('should return current version', () => {
